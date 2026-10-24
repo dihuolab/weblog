@@ -28,7 +28,7 @@ npx serve .
 
 然后打开 http://localhost:8000/
 
-> 注意：当前机器上没有 Node/Python，所以直接用浏览器打开文件是最省事的方式。
+> 有 Node 或 Python 时用本地服务器更接近线上环境；没有的话，直接双击 `index.html` 也能正常浏览。
 
 ## 目录结构
 
@@ -104,11 +104,11 @@ npx serve .
 
 ### 调整导航
 
-五个页面共用同一段页头/页脚。新增页面时，需要同步复制页头与页脚，并更新各页的 `aria-current="page"`。
+五个主页面与 404 页共用同一段页头/页脚。新增页面时，需要同步复制页头与页脚，并更新各页的 `aria-current="page"`。
 
 ## 部署到 GitHub Pages
 
-仓库已经包含 `.nojekyll`，可以直接从分支根目录发布。
+仓库已经包含 `.nojekyll`，当前已配置为从 `main` 分支根目录发布（https://dihuolab.github.io/weblog/ 已上线）。
 
 1. 把改动推送到 `main` 分支。
 2. 打开仓库 **Settings → Pages**。
@@ -116,7 +116,7 @@ npx serve .
 4. **Branch** 选择 `main`，目录选择 **/ (root)**，点击 **Save**。
 5. 等待 1–2 分钟，访问 https://dihuolab.github.io/weblog/
 
-之后每次 push 到 `main`，Pages 会自动更新。第一次启用后，仓库的 **Actions** 里会出现 `pages build and deployment` 记录。
+之后每次 push 到 `main`，Pages 会自动重新构建。构建状态可在 **Actions** 或 **Environments → github-pages** 中查看。
 
 ### 自定义域名（可选）
 
