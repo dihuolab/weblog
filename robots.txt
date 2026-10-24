@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://dihuolab.github.io/weblog/sitemap.xml

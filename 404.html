@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>页面走丢了 · 地火创客</title>
+    <meta name="description" content="这个页面不在地面上，也不在地下。回到地火创客首页看看。" />
+    <meta name="theme-color" content="#08080a" />
+    <link rel="icon" href="assets/img/favicon.png" type="image/png" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <script>
+      document.documentElement.classList.add("js");
+    </script>
+    <meta name="robots" content="noindex" />
+  </head>
+
+  <body data-page="404">
+    <a class="skip-link" href="#main">跳到主要内容</a>
+
+    <header class="site-header" data-header>
+      <div class="container header-inner">
+        <a class="brand" href="index.html" aria-label="地火创客 · 首页">
+          <img
+            class="brand-mark"
+            src="assets/img/logo-mark.png"
+            alt=""
+            width="30"
+            height="23"
+          />
+          <span class="brand-text">
+            <strong>地火创客</strong>
+            <span>DIHUOLAB</span>
+          </span>
+        </a>
+
+        <button
+          class="menu-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="site-nav"
+          aria-label="打开菜单"
+        >
+          <span></span>
+          <span></span>
+        </button>
+
+        <nav class="site-nav" id="site-nav" aria-label="主导航">
+          <a href="index.html">首页</a>
+          <a href="about.html">关于</a>
+          <a href="projects.html">项目</a>
+          <a href="news.html">动态</a>
+          <a class="nav-cta" href="join.html">加入我们 <span aria-hidden="true">↗</span></a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="error-page">
+        <div class="container">
+          <div class="error-code" aria-hidden="true">404</div>
+          <h1>这个页面还在地下。</h1>
+          <p>
+            它可能还没被挖出来，也可能已经搬走了。先回首页，或者看看我们正在做什么。
+          </p>
+          <a class="btn btn--primary" href="index.html"
+            >回到首页 <span class="arr" aria-hidden="true">→</span></a
+          >
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <div class="footer-bottom">
+          <span>© <span data-year>2026</span> 地火创客 · DIHUOLAB</span>
+          <span>BUILT BY MAKERS · 地下之火，仍在燃烧</span>
+        </div>
+      </div>
+    </footer>
+
+    <script src="assets/js/data.js" defer></script>
+    <script src="assets/js/site.js" defer></script>
+  </body>
+</html>
