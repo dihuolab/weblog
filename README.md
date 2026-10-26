@@ -3,6 +3,7 @@
 地火创客（DIHUOLAB）的官方网站。用来介绍地火的最新状态、活动、业务、精神、会员与创办历史，也用来发布项目需求、召集创客共同研发。
 
 - **线上地址**：https://dihuolab.github.io/weblog/
+- **英文版**：https://dihuolab.github.io/weblog/en/
 - **仓库**：https://github.com/dihuolab/weblog
 
 ## 技术选择
@@ -11,7 +12,8 @@
 
 - 没有构建步骤、没有 npm 依赖、没有外部 CDN 请求，双击 `index.html` 就能看。
 - 适合 GitHub Pages 直接托管，推送即发布。
-- 动态与项目数据集中在 `assets/js/data.js`，改内容不需要碰页面结构。
+- 动态与项目数据集中在 `assets/js/data.js`（英文版为 `assets/js/data-en.js`），改内容不需要碰页面结构。
+- 中英文为两套独立页面，共用 CSS/JS；页头地球图标在对应页面间切换，并配置了 `hreflang` 与双语 sitemap。
 - 响应式布局、支持 `prefers-reduced-motion`、主要页面有语义化结构与 SEO 元信息。
 
 ## 本地预览
@@ -40,16 +42,19 @@ npx serve .
 ├── news.html                  动态与记录 + 灵感源
 ├── join.html                  加入方式、联系方式
 ├── 404.html                   404 页
+├── en/                        英文版（index / about / projects / news / join）
 ├── assets/
 │   ├── css/style.css          全部样式与设计变量
-│   ├── js/data.js             ★ 动态 / 项目 / 站点链接（日常只改这里）
-│   ├── js/site.js             导航、动画、列表渲染、筛选、首屏火星
+│   ├── js/data.js             ★ 中文动态 / 项目 / 站点链接
+│   ├── js/data-en.js          ★ 英文动态 / 项目 / 站点链接
+│   ├── js/site.js             导航、动画、双语列表渲染、筛选、首屏火星
 │   └── img/
 │       ├── dihuologo.png      官方 logo 原图（保留原始文件）
 │       ├── logo-mark.png      官方红色笔触图形（透明底，用于页头、首屏）
 │       ├── logo-wordmark-light.png  深色背景用横版组合（透明底）
 │       ├── favicon.png        站点图标
-│       └── og.png             社交分享图（1200×630）
+│       ├── og.png             中文社交分享图（1200×630）
+│       └── og-en.png          英文社交分享图（1200×630）
 ├── .github/ISSUE_TEMPLATE/
 │   ├── join.md                “报名加入” Issue 模板
 │   └── project-proposal.md    “发起项目” Issue 模板
@@ -96,16 +101,20 @@ npx serve .
 
 每张卡片会自动生成“我想参与”按钮，点击后带着项目名打开一条新的 GitHub Issue。
 
+### 更新英文内容
+
+英文页面在 `en/`，内容数据在 `assets/js/data-en.js`，字段与中文版一致。项目 `status` 使用 `Recruiting` / `Preparing` / `In progress` / `Completed`，`site.js` 会自动映射成对应状态样式。英文动态的站内链接（如 `projects.html`）是相对于 `en/` 的路径。
+
 ### 修改联系方式 / 社交链接
 
 - 页脚与各页的 GitHub 链接：搜索 `https://github.com/dihuolab/weblog` 批量替换即可。
-- 线下地址：加入页的 `contact-address` 区块与各页页脚，当前为「四川省成都市郫都区校园路818号附697号」。
-- 联系方式目前在 `join.html` 的 `contact-list` 区块，补齐后建议同步更新页脚“找到我们”。
-- 站点级链接（仓库、Issue 入口）集中在 `assets/js/data.js` 顶部的 `window.DIHUO_SITE`。
+- 线下地址：中文加入页的 `contact-address` 区块与各页页脚，当前为「四川省成都市郫都区校园路818号附697号」；英文页使用 “Annex 697, No. 818 Xiaoyuan Road, Pidu District, Chengdu, Sichuan, China”。
+- 联系方式目前在 `join.html` 的 `contact-list` 区块，补齐后建议同步更新中英文页脚。
+- 站点级链接（仓库、Issue 入口）集中在 `assets/js/data.js` 与 `assets/js/data-en.js` 顶部的 `window.DIHUO_SITE`。
 
-### 调整导航
+### 调整导航 / 新增页面
 
-五个主页面与 404 页共用同一段页头/页脚。新增页面时，需要同步复制页头与页脚，并更新各页的 `aria-current="page"`。
+五个中文主页面、英文 `en/` 页面与 404 页共用同一套页头/页脚结构。新增页面时，需要同步复制页头与页脚，更新各页的 `aria-current="page"`、语言切换链接、`canonical`、`hreflang` 与 `sitemap.xml`。
 
 ## 部署到 GitHub Pages
 
@@ -134,7 +143,8 @@ npx serve .
 
 - **色彩**：近黑 `#08080a`、地火红 `#e8232f`、暖白 `#f4f1ea`，辅以余烬橙 `#ff7a35`。官方 logo 的笔触红为 `#b04038`，标志相关图形一律使用该色。
 - **标志**：使用官方红黑 logo。页头取红色笔触图形 + “地火创客 / DIHUOLAB”，首屏中央使用同一笔触图形，社交图与图标均由官方原图生成。
-- **字体**：中文使用系统中文字体（PingFang SC / 微软雅黑 / Noto Sans SC），标签与数字使用等宽字体，不请求外部字体。
+- **字体**：中文使用系统中文字体（PingFang SC / 微软雅黑 / Noto Sans SC），英文使用 Arial / Helvetica 系统字体，标签与数字使用等宽字体，不请求外部字体。
+- **双语**：中文页面在根目录，英文页面在 `en/`；页头地球图标直接跳转到当前页面对应的另一种语言。
 - **动效**：首屏火星粒子、旋转刻度环、滚动进场；全部尊重 `prefers-reduced-motion`。
 - 所有设计变量集中在 `assets/css/style.css` 顶部 `:root`。
 

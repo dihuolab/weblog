@@ -1,33 +1,93 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://dihuolab.github.io/weblog/</loc>
-    <lastmod>2026-10-24</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://dihuolab.github.io/weblog/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://dihuolab.github.io/weblog/en/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dihuolab.github.io/weblog/" />
+  </url>
+  <url>
+    <loc>https://dihuolab.github.io/weblog/en/</loc>
+    <lastmod>2026-10-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://dihuolab.github.io/weblog/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://dihuolab.github.io/weblog/en/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dihuolab.github.io/weblog/" />
   </url>
   <url>
     <loc>https://dihuolab.github.io/weblog/about.html</loc>
-    <lastmod>2026-10-24</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://dihuolab.github.io/weblog/about.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://dihuolab.github.io/weblog/en/about.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dihuolab.github.io/weblog/about.html" />
+  </url>
+  <url>
+    <loc>https://dihuolab.github.io/weblog/en/about.html</loc>
+    <lastmod>2026-10-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://dihuolab.github.io/weblog/about.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://dihuolab.github.io/weblog/en/about.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dihuolab.github.io/weblog/about.html" />
   </url>
   <url>
     <loc>https://dihuolab.github.io/weblog/projects.html</loc>
-    <lastmod>2026-10-24</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://dihuolab.github.io/weblog/projects.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://dihuolab.github.io/weblog/en/projects.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dihuolab.github.io/weblog/projects.html" />
+  </url>
+  <url>
+    <loc>https://dihuolab.github.io/weblog/en/projects.html</loc>
+    <lastmod>2026-10-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://dihuolab.github.io/weblog/projects.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://dihuolab.github.io/weblog/en/projects.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dihuolab.github.io/weblog/projects.html" />
   </url>
   <url>
     <loc>https://dihuolab.github.io/weblog/news.html</loc>
-    <lastmod>2026-10-24</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://dihuolab.github.io/weblog/news.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://dihuolab.github.io/weblog/en/news.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dihuolab.github.io/weblog/news.html" />
+  </url>
+  <url>
+    <loc>https://dihuolab.github.io/weblog/en/news.html</loc>
+    <lastmod>2026-10-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://dihuolab.github.io/weblog/news.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://dihuolab.github.io/weblog/en/news.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dihuolab.github.io/weblog/news.html" />
   </url>
   <url>
     <loc>https://dihuolab.github.io/weblog/join.html</loc>
-    <lastmod>2026-10-24</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://dihuolab.github.io/weblog/join.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://dihuolab.github.io/weblog/en/join.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dihuolab.github.io/weblog/join.html" />
+  </url>
+  <url>
+    <loc>https://dihuolab.github.io/weblog/en/join.html</loc>
+    <lastmod>2026-10-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://dihuolab.github.io/weblog/join.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://dihuolab.github.io/weblog/en/join.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dihuolab.github.io/weblog/join.html" />
   </url>
 </urlset>

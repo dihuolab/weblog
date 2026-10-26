@@ -256,6 +256,43 @@ strong {
   color: var(--dim);
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+}
+
+.lang-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  flex: none;
+  height: 34px;
+  padding: 0 9px;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.lang-toggle svg {
+  width: 15px;
+  height: 15px;
+  flex: none;
+}
+
+.lang-toggle:hover,
+.lang-toggle:focus-visible {
+  border-color: rgba(232, 35, 47, 0.55);
+  background: var(--red-soft);
+  color: var(--text);
+}
+
 .site-nav {
   display: flex;
   align-items: center;
@@ -474,6 +511,26 @@ body.nav-open .menu-toggle span:last-child {
   background-clip: text;
   color: transparent;
   filter: drop-shadow(0 0 30px rgba(232, 35, 47, 0.22));
+}
+
+html[lang="en"] {
+  --font-sans: Arial, "Helvetica Neue", Helvetica, system-ui, sans-serif;
+}
+
+html[lang="en"] .hero h1 {
+  font-size: clamp(2.4rem, 4.8vw, 3.9rem);
+}
+
+html[lang="en"] .hero-lead {
+  max-width: 44ch;
+}
+
+html[lang="en"] .page-hero h1 {
+  font-size: clamp(2.1rem, 4.6vw, 3.8rem);
+}
+
+.en-mobile-break {
+  display: none;
 }
 
 .hero-lead {
@@ -2059,6 +2116,10 @@ html.js .reveal.is-in {
     display: flex;
   }
 
+  .header-actions {
+    gap: 2px;
+  }
+
   .site-nav {
     position: fixed;
     top: var(--header-h);
@@ -2124,6 +2185,10 @@ html.js .reveal.is-in {
     font-size: 0.58rem;
     letter-spacing: 0.18em;
     color: var(--dim);
+  }
+
+  html[lang="en"] .site-nav::after {
+    content: "DIHUOLAB / MAKERSPACE · UNDERGROUND FIRE";
   }
 
   .hero-grid {
@@ -2209,6 +2274,10 @@ html.js .reveal.is-in {
 
   .hero h1 {
     margin: 18px 0 20px;
+  }
+
+  .en-mobile-break {
+    display: block;
   }
 
   .hero-actions {
@@ -2324,6 +2393,10 @@ html.js .reveal.is-in {
 @media (max-width: 380px) {
   .hero h1 {
     font-size: 2.25rem;
+  }
+
+  html[lang="en"] .hero h1 {
+    font-size: 2.15rem;
   }
 
   .hero-meta {

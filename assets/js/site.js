@@ -9,6 +9,66 @@
   var data = window.DIHUO_DATA || { news: [], projects: [] };
   var site = window.DIHUO_SITE || {};
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var lang = /^en/i.test(document.documentElement.lang || "") ? "en" : "zh";
+
+  var UI = {
+    zh: {
+      menuOpen: "打开菜单",
+      menuClose: "关闭菜单",
+      newsFallback: "动态",
+      readMore: "阅读更多",
+      view: "查看",
+      newsEmpty: "暂时没有动态，火还在下面烧着。",
+      projectEmpty: "暂时没有开放项目，欢迎直接带着想法来。",
+      filter: "Filter",
+      all: "全部",
+      newsCount: function (n) {
+        return n + " 条";
+      },
+      projectCount: function (n) {
+        return n + " 个方向";
+      },
+      need: "需要",
+      offer: "可以提供",
+      joinProject: "我想参与",
+      issueTitle: "[参与] ",
+      issueBody: function (title) {
+        return (
+          "你好，我想参与「" +
+          title +
+          "」。\n\n我能提供的：\n\n我想了解的：\n\n（可以附上 GitHub 主页、作品或联系方式）\n"
+        );
+      }
+    },
+    en: {
+      menuOpen: "Open menu",
+      menuClose: "Close menu",
+      newsFallback: "Log",
+      readMore: "Read more",
+      view: "View",
+      newsEmpty: "No updates yet. The fire is still burning below.",
+      projectEmpty: "No open projects right now. Bring an idea and say hello.",
+      filter: "Filter",
+      all: "All",
+      newsCount: function (n) {
+        return n + (n === 1 ? " entry" : " entries");
+      },
+      projectCount: function (n) {
+        return n + (n === 1 ? " project" : " projects");
+      },
+      need: "Need",
+      offer: "Can offer",
+      joinProject: "I'm interested",
+      issueTitle: "[Join] ",
+      issueBody: function (title) {
+        return (
+          'Hi, I would like to get involved in "' +
+          title +
+          '".\n\nWhat I can offer:\n\nWhat I would like to know:\n\n(GitHub profile, portfolio or contact details welcome)\n'
+        );
+      }
+    }
+  }[lang];
 
   var $ = function (selector, scope) {
     return (scope || document).querySelector(selector);
@@ -69,14 +129,14 @@
   function closeNav() {
     document.body.classList.remove("nav-open");
     if (toggle) toggle.setAttribute("aria-expanded", "false");
-    if (toggle) toggle.setAttribute("aria-label", "打开菜单");
+    if (toggle) toggle.setAttribute("aria-label", UI.menuOpen);
   }
 
   if (toggle && nav) {
     toggle.addEventListener("click", function () {
       var open = document.body.classList.toggle("nav-open");
       toggle.setAttribute("aria-expanded", String(open));
-      toggle.setAttribute("aria-label", open ? "关闭菜单" : "打开菜单");
+      toggle.setAttribute("aria-label", open ? UI.menuClose : UI.menuOpen);
     });
 
     nav.addEventListener("click", function (event) {
@@ -126,22 +186,25 @@
 
   /* ------------------------------ 动态 ------------------------------ */
   function newsCard(item) {
+    var type = item.type || UI.newsFallback;
     var link = item.link
       ? '<a class="text-link" href="' +
         esc(item.link) +
-        '">阅读更多 <span aria-hidden="true">→</span></a>'
+        '">' +
+        esc(UI.readMore) +
+        ' <span aria-hidden="true">→</span></a>'
       : "";
 
     return (
       '<article class="news-card reveal" data-type="' +
-      esc(item.type || "动态") +
+      esc(type) +
       '">' +
       '<div class="news-meta"><time datetime="' +
       esc(item.date) +
       '">' +
       fmtDate(item.date) +
       '</time><span class="news-tag">' +
-      esc(item.type || "动态") +
+      esc(type) +
       "</span></div>" +
       "<h3>" +
       esc(item.title) +
@@ -155,22 +218,25 @@
   }
 
   function logItem(item) {
+    var type = item.type || UI.newsFallback;
     var link = item.link
       ? '<a class="text-link" href="' +
         esc(item.link) +
-        '">查看 <span aria-hidden="true">→</span></a>'
+        '">' +
+        esc(UI.view) +
+        ' <span aria-hidden="true">→</span></a>'
       : "";
 
     return (
       '<article class="log-item reveal" data-type="' +
-      esc(item.type || "动态") +
+      esc(type) +
       '">' +
       '<div class="log-date"><time datetime="' +
       esc(item.date) +
       '">' +
       fmtDate(item.date) +
       '</time><span>' +
-      esc(item.type || "动态") +
+      esc(type) +
       "</span></div>" +
       '<div class="log-body"><h3>' +
       esc(item.title) +
@@ -200,28 +266,28 @@
             return isLog ? logItem(item) : newsCard(item);
           })
           .join("")
-      : '<p class="empty">暂时没有动态，火还在下面烧着。</p>';
+      : '<p class="empty">' + esc(UI.newsEmpty) + "</p>";
 
-    if (countEl) countEl.textContent = shown.length + " 条";
+    if (countEl) countEl.textContent = UI.newsCount(shown.length);
 
     var filterRoot = $("[data-news-filters]");
     if (filterRoot && !limit) {
       var types = [];
       items.forEach(function (item) {
-        var t = item.type || "动态";
+        var t = item.type || UI.newsFallback;
         if (types.indexOf(t) === -1) types.push(t);
       });
 
-      var labels = ["全部"].concat(types);
+      var labels = [UI.all].concat(types);
       filterRoot.innerHTML =
-        '<span class="filter-label">Filter</span>' +
+        '<span class="filter-label">' + esc(UI.filter) + "</span>" +
         labels
           .map(function (label, index) {
             return (
               '<button class="chip" type="button" aria-pressed="' +
               (index === 0) +
               '" data-filter="' +
-              esc(label === "全部" ? "" : label) +
+              esc(label === UI.all ? "" : label) +
               '">' +
               esc(label) +
               "</button>"
@@ -246,7 +312,7 @@
           if (show) count += 1;
         });
 
-        if (countEl) countEl.textContent = count + " 条";
+        if (countEl) countEl.textContent = UI.newsCount(count);
       });
     }
   }
@@ -256,7 +322,11 @@
     招募中: "is-open",
     进行中: "is-active",
     筹备中: "is-prep",
-    已完成: "is-done"
+    已完成: "is-done",
+    Recruiting: "is-open",
+    "In progress": "is-active",
+    Preparing: "is-prep",
+    Completed: "is-done"
   };
 
   function projectCard(project, index) {
@@ -276,11 +346,8 @@
         .join("");
     }
 
-    var body =
-      "你好，我想参与「" +
-      project.title +
-      "」。\n\n我能提供的：\n\n我想了解的：\n\n（可以附上 GitHub 主页、作品或联系方式）\n";
-    var link = issueLink("[参与] " + project.title, body);
+    var body = UI.issueBody(project.title);
+    var link = issueLink(UI.issueTitle + project.title, body);
     var note = project.note
       ? '<p class="project-note">' + esc(project.note) + "</p>"
       : "";
@@ -305,15 +372,21 @@
       '<div class="tags">' +
       tags +
       "</div>" +
-      '<div class="spec"><div><h4>需要</h4><ul>' +
+      '<div class="spec"><div><h4>' +
+      esc(UI.need) +
+      "</h4><ul>" +
       list(project.need) +
-      "</ul></div><div><h4>可以提供</h4><ul>" +
+      "</ul></div><div><h4>" +
+      esc(UI.offer) +
+      "</h4><ul>" +
       list(project.offer) +
       "</ul></div></div>" +
       note +
       '<div class="project-foot"><a class="text-link" href="' +
       link +
-      '" target="_blank" rel="noopener">我想参与 <span aria-hidden="true">↗</span></a>' +
+      '" target="_blank" rel="noopener">' +
+      esc(UI.joinProject) +
+      ' <span aria-hidden="true">↗</span></a>' +
       '<span class="mono">OPEN CALL</span></div>' +
       "</article>"
     );
@@ -334,9 +407,9 @@
             return projectCard(project, all.indexOf(project));
           })
           .join("")
-      : '<p class="empty">暂时没有开放项目，欢迎直接带着想法来。</p>';
+      : '<p class="empty">' + esc(UI.projectEmpty) + "</p>";
 
-    if (countEl) countEl.textContent = shown.length + " 个方向";
+    if (countEl) countEl.textContent = UI.projectCount(shown.length);
 
     var filterRoot = $("[data-project-filters]");
     if (filterRoot && !limit) {
@@ -347,16 +420,16 @@
         });
       });
 
-      var labels = ["全部"].concat(tags);
+      var labels = [UI.all].concat(tags);
       filterRoot.innerHTML =
-        '<span class="filter-label">Filter</span>' +
+        '<span class="filter-label">' + esc(UI.filter) + "</span>" +
         labels
           .map(function (label, index) {
             return (
               '<button class="chip" type="button" aria-pressed="' +
               (index === 0) +
               '" data-filter="' +
-              esc(label === "全部" ? "" : label) +
+              esc(label === UI.all ? "" : label) +
               '">' +
               esc(label) +
               "</button>"
@@ -382,7 +455,7 @@
           if (show) count += 1;
         });
 
-        if (countEl) countEl.textContent = count + " 个方向";
+        if (countEl) countEl.textContent = UI.projectCount(count);
       });
     }
   }
