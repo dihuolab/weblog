@@ -19,6 +19,7 @@
       people: "人数",
       level: "难度",
       open: "打开手册",
+      published: "已发布",
       draft: "草稿",
       toc: "本页目录",
       focusOn: "现场模式",
@@ -33,6 +34,7 @@
       people: "Group",
       level: "Level",
       open: "Open manual",
+      published: "Published",
       draft: "Draft",
       toc: "On this page",
       focusOn: "On-site mode",
@@ -83,7 +85,7 @@
     var title = copy.title || workshop.slug || "";
     var summary = copy.summary || "";
     var href = workshop.href || workshop.slug + ".html";
-    var status = workshop.status === "draft" ? UI.draft : UI.open;
+    var status = workshop.status === "draft" ? UI.draft : UI.published;
     var tags = (copy.tags || [])
       .map(function (tag) {
         return '<span class="workshop-tag">' + esc(tag) + "</span>";
