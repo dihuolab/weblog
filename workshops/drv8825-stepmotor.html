@@ -121,7 +121,7 @@
               </div>
               <div>
                 <span>更新</span>
-                <strong>2026-11-17</strong>
+                <strong>2026-11-18</strong>
               </div>
             </div>
 
@@ -738,9 +738,10 @@
               <ul>
                 <li>
                   <strong>测量员</strong>：先把黑表笔用鳄鱼夹夹死在任意一处 GND——模块上的 GND、
-                  ESP32 的 GND、甚至直接夹到 DC 接头引出的黑线（−）上都可以，它们是同一个地。
-                  夹好后整场不再碰它，然后负责把红表笔稳稳顶在<strong>电位器金属帽的边缘</strong>
-                  （正中间的一字口留给螺丝刀），全程盯表并大声报数。
+                  ESP32 的 GND、甚至直接夹到 DC 接头引出的黑线（−）上都可以，它们是同一个地，
+                  夹哪儿都一样。夹好后整场不再碰它，然后负责把红表笔稳稳顶在
+                  <strong>电位器金属帽的边缘</strong>（正中间的一字口留给螺丝刀），
+                  全程盯表并大声报数：「0.35……0.42……0.5，到了！」
                 </li>
                 <li>
                   <strong>操作员</strong>：双手持精密螺丝刀，从金属帽正中的一字口进入，
@@ -751,9 +752,43 @@
                 </li>
               </ul>
 
+              <div class="manual-gallery">
+                <figure class="manual-figure">
+                  <img
+                    src="../assets/img/workshops/drv8825/vref-probe-closeup.jpg"
+                    alt="Vref 测量实操特写：红表笔顶在电位器金属帽边缘，精密螺丝刀从帽中心一字口进入调节"
+                    loading="lazy"
+                  />
+                  <figcaption>
+                    实操特写：红表笔只顶在金属帽边缘，螺丝刀从帽正中心的一字口进入——两人各管一样，互不打架。
+                  </figcaption>
+                </figure>
+                <figure class="manual-figure">
+                  <img
+                    src="../assets/img/workshops/drv8825/vref-teamwork.jpg"
+                    alt="Vref 两人分工全景：一人持模块用螺丝刀调节电位器，另一人将红表笔顶在金属帽上、黑表笔压在 DC 接头端子的负极，万用表直流电压档读数"
+                    loading="lazy"
+                  />
+                  <figcaption>
+                    两人分工全景：操作员持模块拧电位器，测量员红表笔顶金属帽、黑表笔压在 DC 接头端子的负极（黑线侧）。
+                    万用表红笔插 VΩ 孔、黑笔插 COM、直流电压档；屏幕显示 000.0 通常只是电位器停在 0 位，朝增大方向多拧几圈就有读数。
+                  </figcaption>
+                </figure>
+              </div>
+
+              <div class="manual-callout">
+                <strong>黑表笔只能夹在真正的 GND 上</strong>
+                <p>
+                  模块 GND、ESP32 GND、电源黑线都是同一个地，夹哪儿都一样。
+                  <strong>但不能夹在电机支架或电机外壳上</strong>——它们和电路地是隔离的，
+                  以它为参考，读数会漂移，甚至一直是 0。
+                </p>
+              </div>
+
               <ol>
                 <li>
-                  万用表拨<strong>直流电压档</strong>（选 2V 或 20V 手动量程）。黑表笔接任意一处 GND，
+                  万用表拨<strong>直流电压档</strong>（选 2V 或 20V 手动量程）。黑表笔接任意一处 GND——
+                  模块上的 GND、ESP32 的 GND、或直接夹到电源黑线（−）上都行，它们全部相通。
                   用鳄鱼夹夹牢，之后整个标定过程不再碰它。
                 </li>
                 <li>
@@ -1110,6 +1145,11 @@ void loop() {
                     <td>电位器轻轻一动读数变化很大</td>
                     <td>单圈电位器行程短，目标值只占全行程的一小段</td>
                     <td>表笔用夹子固定、万用表手动量程、每次只蹭一点点</td>
+                  </tr>
+                  <tr>
+                    <td>拧电位器读数始终是 0</td>
+                    <td>12V 没接通（Vref 由芯片内部 3.3V 稳压器供给，稳压器从 VMOT 取电）；红表笔插在电流 mA 插孔；电位器顶死在 0 端且旋钮空转；个别兼容板金属帽与电阻体绝缘</td>
+                    <td>先量 VMOT 确认 12V 在；红表笔确认插在 V/Ω 孔；反向拧 1/4 圈看读数是否起飞；仍为 0 就直接量电位器中间焊点（滑动端），那里也没有电压就换板</td>
                   </tr>
                   <tr>
                     <td>上传失败 / 找不到端口</td>

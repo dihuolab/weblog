@@ -34,4 +34,4 @@ en/workshops/<slug>.html
 | --- | --- |
 | [让电机转起来（drv8825-stepmotor）](../drv8825-stepmotor.html) | <https://gitee.com/zaoyige/tryesp32/tree/master/workshop/drv8825-stepmotor> |
 
-图片原文件来自上面的 Gitee 仓库；网站使用的照片存放在 `assets/img/workshops/drv8825/`，其中四张板卡特写做了居中裁切，方便在手册中看清丝印。
+图片原文件来自上面的 Gitee 仓库；网站使用的照片存放在 `assets/img/workshops/drv8825/`，其中五张板卡特写做了居中裁切，方便在手册中看清丝印；Vref 的两张实拍（图 8-3、8-4）按原图使用。

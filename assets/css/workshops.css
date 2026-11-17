@@ -547,6 +547,10 @@
   line-height: 1.65;
 }
 
+.manual-table tbody tr:nth-child(even) td {
+  background: rgba(255, 255, 255, 0.018);
+}
+
 .manual-table tr:last-child td {
   border-bottom: 0;
 }
@@ -669,8 +673,8 @@
 
 .manual-figure figcaption {
   margin-top: 9px;
-  color: var(--dim);
-  font-size: 0.74rem;
+  color: var(--muted);
+  font-size: 0.78rem;
   line-height: 1.6;
 }
 
@@ -687,6 +691,11 @@
 
 .manual-gallery .manual-figure {
   margin: 0;
+}
+
+.manual-gallery .manual-figure img {
+  width: 100%;
+  max-height: none;
 }
 
 .manual-code {
@@ -984,6 +993,10 @@ body.manual-focus .manual-content section {
     border-color: #bbb !important;
     max-height: 90mm;
     object-fit: contain;
+  }
+
+  .manual-gallery .manual-figure img {
+    max-height: 90mm;
   }
 
   .manual-figure figcaption,

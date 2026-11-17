@@ -18,7 +18,7 @@ window.DIHUO_WORKSHOPS = {
     {
       slug: "drv8825-stepmotor",
       status: "published",
-      updated: "2026-11-17",
+      updated: "2026-11-18",
       zh: {
         title: "让电机转起来",
         summary:

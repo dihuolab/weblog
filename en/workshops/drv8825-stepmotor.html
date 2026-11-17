@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -123,7 +123,7 @@
               </div>
               <div>
                 <span>Updated</span>
-                <strong>2026-11-17</strong>
+                <strong>2026-11-18</strong>
               </div>
             </div>
 
@@ -769,9 +769,10 @@
                 <li>
                   <strong>Measurer:</strong> clip the black probe to any GND — module GND,
                   ESP32 GND, even the black (−) lead from the DC adapter; they are all the
-                  same node. Clip it and do not touch it again. Then hold the red probe firmly
-                  on the <strong>edge of the metal potentiometer cap</strong> (leave the centre
-                  slot for the screwdriver) and read the meter aloud.
+                  same node, so any of them works. Clip it and do not touch it again. Then hold
+                  the red probe firmly on the <strong>edge of the metal potentiometer cap</strong>
+                  (leave the centre slot for the screwdriver) and read the meter aloud:
+                  “0.35… 0.42… 0.5, there!”
                 </li>
                 <li>
                   <strong>Operator:</strong> hold the precision screwdriver in both hands, engage
@@ -784,10 +785,44 @@
                 </li>
               </ul>
 
+              <div class="manual-gallery">
+                <figure class="manual-figure">
+                  <img
+                    src="../../assets/img/workshops/drv8825/vref-probe-closeup.jpg"
+                    alt="Vref measurement close-up: red probe on the edge of the metal potentiometer cap, precision screwdriver engaged in the centre slot"
+                    loading="lazy"
+                  />
+                  <figcaption>
+                    Close-up: the red probe touches only the cap edge while the screwdriver enters the centre slot — each person owns one tool, so they do not fight for space.
+                  </figcaption>
+                </figure>
+                <figure class="manual-figure">
+                  <img
+                    src="../../assets/img/workshops/drv8825/vref-teamwork.jpg"
+                    alt="Two-person Vref setup: one person holds the module and turns the potentiometer, the other holds the red probe on the cap and the black probe on the DC adapter negative terminal"
+                    loading="lazy"
+                  />
+                  <figcaption>
+                    Two-person view: the operator turns the pot while the measurer holds the red probe on the cap and the black probe on the DC adapter's negative terminal.
+                    Red lead in VΩ, black in COM, DC volts; a 000.0 display usually just means the pot sits at zero — turn it up a few turns and a reading appears.
+                  </figcaption>
+                </figure>
+              </div>
+
+              <div class="manual-callout">
+                <strong>The black probe must touch a real GND</strong>
+                <p>
+                  Module GND, ESP32 GND and the supply's black lead are the same node, so any of them works.
+                  <strong>Do not clip it to the motor bracket or motor housing</strong> — they are isolated
+                  from circuit ground, so the reading will drift or stay at 0.
+                </p>
+              </div>
+
               <ol>
                 <li>
                   Set the multimeter to <strong>DC volts</strong> (2V or 20V manual range).
-                  Clip the black probe to any GND and leave it for the whole calibration.
+                  Clip the black probe to any GND — module GND, ESP32 GND or the supply's black
+                  (−) lead; they are all connected. Leave it there for the whole calibration.
                 </li>
                 <li>
                   Touch the red probe to the <strong>metal cap of the potentiometer</strong>.
@@ -1159,6 +1194,11 @@ void loop() {
                     <td>Potentiometer reading jumps with the slightest touch</td>
                     <td>Single-turn pot with short travel; the target is a small part of the range</td>
                     <td>Clip the probe, use a manual range, nudge in tiny amounts</td>
+                  </tr>
+                  <tr>
+                    <td>Turning the pot but the reading stays at 0</td>
+                    <td>No 12V on VMOT (the internal 3.3V regulator and Vref reference are fed from it); red probe in the mA jack; pot pinned at the zero end with the knob slipping; some clones have an isolated metal cap</td>
+                    <td>Measure VMOT and confirm 12V; check the red probe is in V/Ω; turn a quarter turn the other way and watch for a jump; if still 0, measure the pot's centre solder pad (wiper) — no voltage there means replace the board</td>
                   </tr>
                   <tr>
                     <td>Upload fails / port not found</td>
