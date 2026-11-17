@@ -1,0 +1,1408 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>让电机转起来 · ESP32 + DRV8825 步进电机入门工作坊 · 地火创客</title>
+    <meta
+      name="description"
+      content="90 分钟零基础工作坊：用 ESP32-S2、DRV8825 和 42 步进电机，从认识部件、找线圈、接线、定电流到烧录程序，让电机按程序正反转。"
+    />
+    <meta name="theme-color" content="#08080a" />
+    <link rel="icon" href="../assets/img/favicon.png" type="image/png" />
+    <link rel="canonical" href="https://dihuolab.github.io/weblog/workshops/drv8825-stepmotor.html" />
+    <link rel="alternate" hreflang="zh-CN" href="https://dihuolab.github.io/weblog/workshops/drv8825-stepmotor.html" />
+    <link rel="alternate" hreflang="en" href="https://dihuolab.github.io/weblog/en/workshops/drv8825-stepmotor.html" />
+    <link rel="alternate" hreflang="x-default" href="https://dihuolab.github.io/weblog/workshops/drv8825-stepmotor.html" />
+    <link rel="stylesheet" href="../assets/css/style.css" />
+    <link rel="stylesheet" href="../assets/css/workshops.css" />
+    <script>
+      document.documentElement.classList.add("js");
+    </script>
+
+    <meta property="og:type" content="article" />
+    <meta property="og:locale" content="zh_CN" />
+    <meta property="og:locale:alternate" content="en_US" />
+    <meta property="og:site_name" content="地火创客" />
+    <meta property="og:title" content="让电机转起来 · ESP32 + DRV8825 步进电机入门工作坊" />
+    <meta
+      property="og:description"
+      content="90 分钟零基础工作坊：从认识部件、找线圈、接线、定电流到烧录程序，让电机按程序正反转。"
+    />
+    <meta property="og:url" content="https://dihuolab.github.io/weblog/workshops/drv8825-stepmotor.html" />
+    <meta
+      property="og:image"
+      content="https://dihuolab.github.io/weblog/assets/img/workshops/drv8825/full-wiring.jpg"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+  </head>
+
+  <body data-page="workshops" class="manual-page">
+    <a class="skip-link" href="#main">跳到主要内容</a>
+
+    <header class="site-header" data-header>
+      <div class="container header-inner">
+        <a class="brand" href="../index.html" aria-label="地火创客 · 首页">
+          <img
+            class="brand-mark"
+            src="../assets/img/logo-mark.png"
+            alt=""
+            width="30"
+            height="23"
+          />
+          <span class="brand-text">
+            <strong>地火创客</strong>
+            <span>DIHUOLAB</span>
+          </span>
+        </a>
+
+        <div class="header-actions">
+          <a class="lang-toggle" href="../en/workshops/drv8825-stepmotor.html" hreflang="en" lang="en" aria-label="Switch to English">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <circle cx="12" cy="12" r="9"></circle>
+              <path d="M3 12h18M12 3c2.5 2.4 3.8 5.6 3.8 9s-1.3 6.6-3.8 9c-2.5-2.4-3.8-5.6-3.8-9S9.5 5.4 12 3Z"></path>
+            </svg>
+            <span>EN</span>
+          </a>
+          <button
+            class="menu-toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="site-nav"
+            aria-label="打开菜单"
+          >
+            <span></span>
+            <span></span>
+          </button>
+
+          <nav class="site-nav" id="site-nav" aria-label="主导航">
+            <a href="../index.html">首页</a>
+            <a href="../about.html">关于</a>
+            <a href="../projects.html">项目</a>
+            <a href="index.html" aria-current="page">工作坊</a>
+            <a href="../news.html">动态</a>
+            <a class="nav-cta" href="../join.html">加入我们 <span aria-hidden="true">↗</span></a>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <main id="main" class="manual-main">
+      <div class="container">
+        <div class="manual-shell">
+          <aside class="manual-toc" data-manual-toc>
+            <span class="mono">本页目录</span>
+            <nav data-toc-list aria-label="本页目录"></nav>
+          </aside>
+
+          <div class="manual-content">
+            <a class="crumb" href="index.html">工作坊 <span>/</span> 手册 / DRV8825</a>
+
+            <span class="manual-kicker">WORKSHOP MANUAL / 01</span>
+            <h1>让电机转起来</h1>
+            <p class="manual-lead">
+              ESP32-S2 + DRV8825 步进电机入门工作坊。今天我们要亲手让一台真实的
+              步进电机，按照自己写的程序转起来——3D 打印机、雕刻机、贴标机、相机滑轨，
+              核心都是「步进电机 + 驱动器 + 一块会发脉冲的主控板」，你今天搭的就是它们的最小原型。
+            </p>
+
+            <div class="manual-meta">
+              <div>
+                <span>时长</span>
+                <strong>约 90 分钟</strong>
+              </div>
+              <div>
+                <span>人数</span>
+                <strong>两人一组</strong>
+              </div>
+              <div>
+                <span>难度</span>
+                <strong>零基础</strong>
+              </div>
+              <div>
+                <span>更新</span>
+                <strong>2026-11-17</strong>
+              </div>
+            </div>
+
+            <div class="manual-actions">
+              <button class="manual-action" type="button" data-print>
+                打印 / 存为 PDF
+              </button>
+              <button
+                class="manual-action"
+                type="button"
+                data-focus-toggle
+                aria-pressed="false"
+              >
+                现场模式
+              </button>
+              <button class="manual-action" type="button" data-reset-checks>
+                清空勾选
+              </button>
+            </div>
+
+            <div class="manual-progress">
+              <span>检查清单进度</span>
+              <strong data-check-progress>0 / 0</strong>
+            </div>
+
+            <section id="overview">
+              <h2><span class="manual-num">01</span>目标与流程</h2>
+              <p>
+                这不是演示课。每个人都要自己完成接线、量电压、调电流和烧录，
+                最后让电机按程序正转一圈、反转一圈。
+              </p>
+
+              <h3>完成本工作坊后，你将能够</h3>
+              <ul>
+                <li>认出套件里每个部件是干什么的，并正确地把它们连起来；</li>
+                <li>会用万用表找到步进电机的两组线圈，不再靠猜线序；</li>
+                <li>理解并亲手设定驱动器的限流（Vref），知道为什么不能乱拧；</li>
+                <li>烧录第一段程序，让电机正转一圈、反转一圈。</li>
+              </ul>
+
+              <div class="manual-callout">
+                <strong>本场形式</strong>
+                <p>动手实操 + 排错挑战。成果标准：电机按程序正反转，芯片温度正常，接线可以经得起复盘。</p>
+              </div>
+
+              <h3>90 分钟流程</h3>
+              <table class="manual-table">
+                <thead>
+                  <tr>
+                    <th>时间</th>
+                    <th>环节</th>
+                    <th>你做什么</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>10 分钟</td>
+                    <td>开场 + 安全须知</td>
+                    <td>听讲，阅读第 02 节</td>
+                  </tr>
+                  <tr>
+                    <td>15 分钟</td>
+                    <td>认识部件 + 贴散热片</td>
+                    <td>对照第 03、05 节动手</td>
+                  </tr>
+                  <tr>
+                    <td>20 分钟</td>
+                    <td>找线圈 + 接线</td>
+                    <td>第 06、07 节，逐线核对</td>
+                  </tr>
+                  <tr>
+                    <td>15 分钟</td>
+                    <td>通电三查 + 定电流</td>
+                    <td>第 08 节，量电压、调 Vref</td>
+                  </tr>
+                  <tr>
+                    <td>20 分钟</td>
+                    <td>烧录程序</td>
+                    <td>第 09 节，让电机转起来</td>
+                  </tr>
+                  <tr>
+                    <td>10 分钟</td>
+                    <td>排错挑战 + 总结</td>
+                    <td>对照第 11 节</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+
+            <section id="safety">
+              <h2><span class="manual-num">02</span>安全第一（必读）</h2>
+              <p>
+                这套器材的电压只有 12V，属于安全电压，不会电伤人。但下面四条规则必须像
+                交通规则一样遵守——违反它们烧掉的不是元件，而是你的整个下午。
+              </p>
+
+              <div class="manual-callout">
+                <strong>规则 1 · 通电时不许插拔任何线</strong>
+                <p>
+                  电机线、电源线、杜邦线，全部一样。带电插拔产生的电压尖峰，一瞬间就能击穿
+                  驱动芯片。要动线，先拔掉 12V 电源。
+                </p>
+              </div>
+
+              <div class="manual-callout">
+                <strong>规则 2 · 电源正负极绝不许接反</strong>
+                <p>
+                  VMOT 接红（+）、GND 接黑（−），接反的一瞬间模块报废。接完电源线后，
+                  先举手让讲师检查，再通电。
+                </p>
+              </div>
+
+              <div class="manual-callout">
+                <strong>规则 3 · 金属工具不许横放在通电的板子上</strong>
+                <p>
+                  螺丝刀、镊子、剪掉的引脚，掉在板上就是短路。工具用完随手放回桌面边缘之外。
+                </p>
+              </div>
+
+              <div class="manual-callout">
+                <strong>规则 4 · 摸芯片之前先试温</strong>
+                <p>
+                  驱动器工作时发热是正常的，但如果烫到不敢碰，说明电流设定过大或散热不足。
+                  此时芯片内部的过热保护正在反复关断输出——先降温，别硬跑。
+                </p>
+              </div>
+
+              <div class="manual-callout manual-callout--warm">
+                <strong>小知识</strong>
+                <p>
+                  本工作坊全部用 12V 供电。真正的工业现场用的是 24V 甚至更高电压的驱动器，
+                  安全规范更严格，但「先断电、再动线、正负极核对」这三条在任何电压下都一样。
+                </p>
+              </div>
+            </section>
+
+            <section id="materials">
+              <h2><span class="manual-num">03</span>材料与工具</h2>
+              <p>下表是你桌上应该有的全部东西。开课前先逐一清点，缺什么立刻举手。</p>
+
+              <figure class="manual-figure">
+                <img
+                  src="../assets/img/workshops/drv8825/kit-with-tools.jpg"
+                  alt="整套材料与工具实物俯拍：万用表、精密螺丝刀套装、12V 电源、42 步进电机、DRV8825 模块、Lolin S2 mini、DC 接头、对接端子、杜邦线、TypeC 数据线"
+                  loading="lazy"
+                />
+                <figcaption>实物全家福：你的桌面清点完，应与这张照片一致。</figcaption>
+              </figure>
+
+              <table class="manual-table">
+                <thead>
+                  <tr>
+                    <th>物品</th>
+                    <th>数量</th>
+                    <th>作用</th>
+                    <th>注意</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>42 步进电机</td>
+                    <td>1</td>
+                    <td>执行器，今天的主角，4 根线两组线圈</td>
+                    <td>线有插头，不要硬拽</td>
+                  </tr>
+                  <tr>
+                    <td>DRV8825 驱动模块</td>
+                    <td>1</td>
+                    <td>把弱电信号变成能推动电机的强电，附散热片</td>
+                    <td>静电敏感，捏边缘不捏芯片</td>
+                  </tr>
+                  <tr>
+                    <td>Lolin S2 mini（ESP32-S2）</td>
+                    <td>1</td>
+                    <td>主控板，发脉冲信号的大脑</td>
+                    <td>排针方向以板上丝印为准</td>
+                  </tr>
+                  <tr>
+                    <td>12V 开关电源</td>
+                    <td>1</td>
+                    <td>给电机供电的动力来源</td>
+                    <td>输出正负极看标签，别接反</td>
+                  </tr>
+                  <tr>
+                    <td>DC 接头（母头）</td>
+                    <td>1</td>
+                    <td>接在电源输出上，引出红黑两根线</td>
+                    <td>红 = +12V，黑 = GND</td>
+                  </tr>
+                  <tr>
+                    <td>2 位对接端子</td>
+                    <td>2</td>
+                    <td>把 DC 接头的导线转接成杜邦线</td>
+                    <td>压线前确认顶紧</td>
+                  </tr>
+                  <tr>
+                    <td>杜邦线（公公 / 公母）</td>
+                    <td>若干</td>
+                    <td>所有信号与电源连接</td>
+                    <td>颜色建议：红正黑负，其余随意</td>
+                  </tr>
+                  <tr>
+                    <td>万用表</td>
+                    <td>1</td>
+                    <td>找线圈、量电压、定电流，今天的第二主角</td>
+                    <td>用前确认档位</td>
+                  </tr>
+                  <tr>
+                    <td>精密螺丝刀</td>
+                    <td>1</td>
+                    <td>拧 Vref 电位器、拆装</td>
+                    <td>金属杆通电时勿横放板上</td>
+                  </tr>
+                  <tr>
+                    <td>笔记本电脑 + TypeC 数据线</td>
+                    <td>1</td>
+                    <td>写程序、烧录、看串口输出</td>
+                    <td>必须用数据线，不能是纯充电线</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div class="manual-gallery">
+                <figure class="manual-figure">
+                  <img
+                    src="../assets/img/workshops/drv8825/psu-12v.jpg"
+                    alt="12V 2.5A 电源适配器实物"
+                    loading="lazy"
+                  />
+                  <figcaption>12V 开关电源（输出 12V ⎓ 2.5A · 30W）</figcaption>
+                </figure>
+                <figure class="manual-figure">
+                  <img
+                    src="../assets/img/workshops/drv8825/dc-adapter.jpg"
+                    alt="带绿色螺丝端子的 DC 接头母头实物"
+                    loading="lazy"
+                  />
+                  <figcaption>DC 接头母头——端子上的 + − 丝印要和线色对上</figcaption>
+                </figure>
+                <figure class="manual-figure">
+                  <img
+                    src="../assets/img/workshops/drv8825/wago-terminals.jpg"
+                    alt="两个白色按压式对接端子实物"
+                    loading="lazy"
+                  />
+                  <figcaption>2 位对接端子 ×2（按压式快接）</figcaption>
+                </figure>
+                <figure class="manual-figure">
+                  <img
+                    src="../assets/img/workshops/drv8825/dupont-wires.jpg"
+                    alt="一捆红黄黑杜邦线实物"
+                    loading="lazy"
+                  />
+                  <figcaption>公公 / 公母杜邦线</figcaption>
+                </figure>
+              </div>
+
+              <div class="manual-callout manual-callout--warm">
+                <strong>进阶物料（本次先不发）</strong>
+                <p>
+                  100µF / 25V 电解电容每桌 1 个。DRV8825 模块的输入端用的是陶瓷电容，
+                  电源线一长就容易产生超过 45V 的电压尖峰，直接击穿芯片。工作坊阶段先不接，
+                  由讲师统一保管，留作第 12 节进阶任务；在不接电容的情况下，请严格遵守
+                  「通电不插拔电源线」。
+                </p>
+              </div>
+            </section>
+
+            <section id="parts">
+              <h2><span class="manual-num">04</span>认识核心部件</h2>
+
+              <h3>4.1 42 步进电机 —— 分秒不差的「铁腿」</h3>
+              <p>
+                名字里的 42 指机座宽 42mm。它不是连续旋转的普通马达，而是「走一步、停一步」：
+                每收到一个电脉冲，轴精确地转过 1.8°，转一圈恰好 200 步。它有 4 根线，
+                实际上是两组独立的线圈（A 组、B 组），驱动器轮流给两组通电，转子就一步步转起来。
+                今天的第一道动手题，就是用万用表把这两组找出来。
+              </p>
+
+              <div class="manual-gallery">
+                <figure class="manual-figure">
+                  <img
+                    src="../assets/img/workshops/drv8825/motor.jpg"
+                    alt="42 步进电机实物，铭牌朝上"
+                    loading="lazy"
+                  />
+                  <figcaption>42 步进电机——铭牌上的 1.8° 就是步距角，转一圈恰好 200 步</figcaption>
+                </figure>
+                <figure class="manual-figure">
+                  <img
+                    src="../assets/img/workshops/drv8825/motor-cable.jpg"
+                    alt="电机引出线缆实物"
+                    loading="lazy"
+                  />
+                  <figcaption>电机引出线缆（插头间距与杜邦母头兼容，可直接对插）</figcaption>
+                </figure>
+              </div>
+
+              <h3>4.2 DRV8825 驱动模块 —— 翻译官兼放大器</h3>
+              <p>
+                ESP32 的引脚只能输出几毫安的弱电，直接接电机推不动它。DRV8825 干两件事：
+                把 STEP/DIR 这样的弱电信号翻译成给两组线圈供电的时序（专业名词叫「细分」），
+                并用 12V 电源把电流放大到 1A 以上。它有 16 个引脚，先别慌，我们只用到其中 12 个。
+              </p>
+
+              <div class="manual-gallery">
+                <figure class="manual-figure">
+                  <img
+                    src="../assets/img/workshops/drv8825/drv8825-front.jpg"
+                    alt="DRV8825 模块正面实物"
+                    loading="lazy"
+                  />
+                  <figcaption>正面：黑色芯片（散热片贴这里）、蓝色电流设定电位器、陶瓷电容</figcaption>
+                </figure>
+                <figure class="manual-figure">
+                  <img
+                    src="../assets/img/workshops/drv8825/drv8825-back.jpg"
+                    alt="DRV8825 模块背面实物，引脚丝印清晰"
+                    loading="lazy"
+                  />
+                  <figcaption>背面：丝印一排排清清楚楚，接线前以这块板自己的丝印为准逐脚核对</figcaption>
+                </figure>
+              </div>
+
+              <p>三个新手最容易困惑的点，提前说清楚：</p>
+              <ol>
+                <li>
+                  <strong>没有 VDD 引脚</strong>：这块模块内部自带 3.3V 稳压器，逻辑部分由
+                  12V 自动供电，所以你不需要给它接第二路电源。
+                </li>
+                <li>
+                  <strong>两个 GND 是相通的</strong>：电机地和逻辑地内部相连，任意一个接
+                  ESP32 的 GND 就算共地。
+                </li>
+                <li>
+                  <strong>RST 和 SLP 必须拉高</strong>：这两个脚低电平时芯片内部整个复位、
+                  所有输出关闭，而且<strong>不会报任何故障</strong>——这是新手「接线全对电机却不转」
+                  的最常见原因，第 08 节会专门验证。
+                </li>
+              </ol>
+
+              <h3>4.3 Lolin S2 mini（ESP32-S2）—— 发号施令的大脑</h3>
+              <p>
+                它是一块指甲盖大小的单片机开发板，插上 USB 就能编程。它的工作只有一个：
+                按程序设定的节奏，在 STEP 脚上发出一串脉冲、在 DIR 脚上给出方向电平，
+                其余 6 个脚负责配置驱动器。板子通过 TypeC 数据线连接电脑。
+              </p>
+
+              <div class="manual-gallery">
+                <figure class="manual-figure">
+                  <img
+                    src="../assets/img/workshops/drv8825/s2mini-front.jpg"
+                    alt="Lolin S2 mini 正面实物"
+                    loading="lazy"
+                  />
+                  <figcaption>正面：TypeC 接口、ESP32-S2 芯片、RESET / BOOT 按钮</figcaption>
+                </figure>
+                <figure class="manual-figure">
+                  <img
+                    src="../assets/img/workshops/drv8825/s2mini-back.jpg"
+                    alt="Lolin S2 mini 背面实物，GPIO 丝印清晰"
+                    loading="lazy"
+                  />
+                  <figcaption>背面：GPIO 编号丝印一目了然，插线前对照这一面最稳</figcaption>
+                </figure>
+              </div>
+
+              <h3>4.4 供电三件套 —— 12V 电源、DC 接头、对接端子</h3>
+              <p>
+                12V 开关电源是动力来源，输出端是一个 DC 圆孔。DC 接头（母头）插上去之后，
+                引出红（+12V）黑（GND）两根线。这两根线是「裸线」，没法直接插到模块的排针上
+                ——这就是两个 2 位对接端子的用处：把裸线和杜邦线在端子里对插压紧，
+                导线就从「裸头」变成了「可插拔的杜邦头」。另一个端子留作备用。
+              </p>
+
+              <h3>4.5 万用表与精密螺丝刀 —— 今天的第二主角</h3>
+              <p>
+                万用表今天承担三项任务：① 电阻/蜂鸣档找电机线圈；② 直流电压档确认 12V 和 Vref；
+                ③ 排错时当「眼睛」。精密螺丝刀只干一件事：拧 DRV8825 上那颗小小的电流设定电位器
+                ——后面你会知道，这一拧直接决定电机转得顺不顺、芯片烫不烫。
+              </p>
+            </section>
+
+            <section id="heatsink">
+              <h2><span class="manual-num">05</span>动手 0：贴散热片</h2>
+              <p>
+                DRV8825 芯片工作时发热量不小，裸板只能长期承受约 1A/相的电流。
+                模块附送的散热片必须在<strong>通电之前</strong>贴好——通电后再贴，芯片已经烫手了。
+              </p>
+
+              <figure class="manual-figure manual-figure--narrow">
+                <img
+                  src="../assets/img/workshops/drv8825/drv8825-heatsink.jpg"
+                  alt="贴好散热片的 DRV8825 模块实物"
+                  loading="lazy"
+                />
+                <figcaption>散热片已贴在黑色芯片正上方，所有排针都留在外侧。</figcaption>
+              </figure>
+
+              <ol>
+                <li>
+                  散热片贴在<strong>黑色芯片</strong>的正上方，背胶面朝芯片；
+                </li>
+                <li>
+                  贴好后确认散热片<strong>没有碰到旁边任何一个元件或排针</strong>——金属散热片是导电的，
+                  碰到就是短路；
+                </li>
+                <li>撕下来的保护膜随手收进垃圾袋，别留在桌面上。</li>
+              </ol>
+            </section>
+
+            <section id="coils">
+              <h2><span class="manual-num">06</span>动手 1：找到两组线圈</h2>
+              <p>
+                42 电机的 4 根线里，两两一组：A 组一对、B 组一对。
+                <strong>绝对不要靠颜色猜</strong>——不同厂家的颜色定义完全不同。
+                正确姿势是用万用表量出来，三分钟搞定。
+              </p>
+
+              <figure class="manual-figure">
+                <img
+                  src="../assets/img/workshops/drv8825/motor-wiring.jpg"
+                  alt="电机引出线经对接端子转接实物"
+                  loading="lazy"
+                />
+                <figcaption>实物：电机引出线经对接端子转接——量线圈时在端子另一侧测量同样有效。</figcaption>
+              </figure>
+
+              <ol>
+                <li>
+                  万用表拨到<strong>电阻档（Ω）或蜂鸣档</strong>。红黑表笔任意接触电机的两根线，读数记下来。
+                </li>
+                <li>
+                  换不同的两根组合再量，直到找到<strong>两对「导通」的组合</strong>：
+                  读数在 1Ω～十几 Ω 之间（蜂鸣档会响）。42 电机的典型值在 1~10Ω 左右。
+                </li>
+                <li>
+                  剩下那些「完全不导通（显示 OL 或超大阻值）」的组合说明两根线分属不同组，
+                  <strong>永远不要</strong>把它们接进同一组输出。
+                </li>
+                <li>
+                  把导通的两组做好标记（比如贴标签：A 组、B 组），分别对应接 DRV8825 的
+                  A1/A2 和 B1/B2。
+                </li>
+              </ol>
+
+              <div class="manual-callout">
+                <strong>检查点</strong>
+                <p>
+                  两组各自导通、组与组之间不导通。做到这一步，后面「电机嗡嗡响却不转」的
+                  最大元凶就被你提前消灭了。
+                </p>
+              </div>
+            </section>
+
+            <section id="wiring">
+              <h2><span class="manual-num">07</span>动手 2：完成全部接线</h2>
+              <p>
+                先看整体，再按 7.1～7.5 逐步执行。<strong>全程断电操作</strong>——12V 电源此时不要插上。
+              </p>
+
+              <figure class="manual-figure">
+                <img
+                  src="../assets/img/workshops/drv8825/full-wiring.jpg"
+                  alt="全系统接线实物全景：ESP32-S2、DRV8825、步进电机、DC 接头电源线"
+                  loading="lazy"
+                />
+                <figcaption>实物全景：ESP32-S2 → 8 根控制线 → DRV8825 → 电机，左上角为 DC 接头与对接端子转出的电源线。</figcaption>
+              </figure>
+
+              <h3>7.1 电机 → 模块（4 根线）</h3>
+              <p>
+                第 06 节找到的 <strong>A 组</strong>两根线 → 模块 <strong>A1、A2</strong>；
+                <strong>B 组</strong>两根线 → <strong>B1、B2</strong>。组内两根线哪个接 A1、
+                哪个接 A2 都行，只影响转向，不影响能不能转。
+              </p>
+              <p>42 电机的白色插头间距与杜邦母头相同，可以直接对插，不需要对接端子。</p>
+
+              <h3>7.2 电源 → 模块（2 根线）</h3>
+              <ol>
+                <li>把 DC 接头插到 12V 电源输出孔上（卡扣对准按到底）。</li>
+                <li>
+                  DC 接头引出的红、黑两根线，分别与两根杜邦线在<strong>对接端子</strong>里对插压紧：
+                  红出红（或按颜色习惯），黑出黑。
+                </li>
+                <li>
+                  红杜邦线（公头端）插模块 <strong>VMOT</strong>，黑杜邦线插模块
+                  <strong>旁边那个 GND</strong>（电源侧地）。
+                </li>
+              </ol>
+
+              <figure class="manual-figure">
+                <img
+                  src="../assets/img/workshops/drv8825/dc-adapter-wiring.jpg"
+                  alt="DC 接头端子接入红黑杜邦线实物"
+                  loading="lazy"
+                />
+                <figcaption>实物：DC 接头端子接入红（+12V）黑（GND）杜邦线——先和端子上的 + − 丝印核对再压线。</figcaption>
+              </figure>
+
+              <div class="manual-callout manual-callout--warm">
+                <strong>100µF 电解电容：本次先不接</strong>
+                <p>
+                  它的作用是吸收电源线上的电压尖峰、保护芯片（正确接法：长脚正极接 VMOT、
+                  短脚接 GND，极性反了会鼓包炸裂）。为了给新手降低接线难度，工作坊阶段先跳过，
+                  留作第 12 节的进阶任务。在补上电容之前请遵守一条纪律：
+                  <strong>通电状态下绝不插拔 VMOT 电源线</strong>。
+                </p>
+              </div>
+
+              <h3>7.3 ESP32 → 模块（8 根控制线 + 共地）</h3>
+              <p>
+                按下面第 13 节的引脚表逐根连接：GPIO2→DIR、GPIO3→STEP、GPIO4→SLP、
+                GPIO5→RST、GPIO6→M2、GPIO7→M1、GPIO8→M0、GPIO9→EN。最后拿一根黑色杜邦线，
+                从 ESP32 的 GND 接到模块右侧的 GND——<strong>这根线叫「共地」，
+                少接它整个系统都不工作</strong>，因为电压是相对而言的，两边必须有同一个参考点。
+              </p>
+
+              <h3>7.4 特别关照：SLP 和 RST 这两个脚</h3>
+              <p>
+                DRV8825 的 SLP（睡眠）和 RST（复位）都是<strong>低电平有效</strong>：
+                只要其中一个被拉低或悬空，芯片内部整个关断，电机毫无反应、毫无力矩
+                ——而且这<strong>不算故障</strong>，FLT 脚依然是高电平，万用表量不出来。
+                这是新手「接线全对、电机死活不转」的头号原因。我们的程序会在开头把这两个脚拉高，
+                但你的物理连线必须真实可靠。
+              </p>
+
+              <h3>7.5 断电自查</h3>
+              <ul class="manual-checklist">
+                <li>
+                  <label class="manual-check">
+                    <input type="checkbox" id="wiring-1" data-check />
+                    <span>VMOT 红、GND 黑，无反接；电容本次不接（进阶任务）。</span>
+                  </label>
+                </li>
+                <li>
+                  <label class="manual-check">
+                    <input type="checkbox" id="wiring-2" data-check />
+                    <span>电机两组线圈没有跨组混接。</span>
+                  </label>
+                </li>
+                <li>
+                  <label class="manual-check">
+                    <input type="checkbox" id="wiring-3" data-check />
+                    <span>8 根控制线逐根对照表格念一遍「GPIO 几 → 模块哪个脚」。</span>
+                  </label>
+                </li>
+                <li>
+                  <label class="manual-check">
+                    <input type="checkbox" id="wiring-4" data-check />
+                    <span>ESP32 与模块之间有一根 GND 共地线。</span>
+                  </label>
+                </li>
+                <li>
+                  <label class="manual-check">
+                    <input type="checkbox" id="wiring-5" data-check />
+                    <span>散热片已贴、没有碰到别的引脚。</span>
+                  </label>
+                </li>
+                <li>
+                  <label class="manual-check">
+                    <input type="checkbox" id="wiring-6" data-check />
+                    <span>桌面无散落金属工具、剪下的引脚。</span>
+                  </label>
+                </li>
+              </ul>
+              <p>全部打勾 → 举手请讲师复核 → 才可以进入第 08 节通电。</p>
+            </section>
+
+            <section id="power">
+              <h2><span class="manual-num">08</span>通电调试：三查 + 定电流</h2>
+
+              <h3>8.1 通电前三查</h3>
+              <ol>
+                <li>
+                  <strong>查电源</strong>：12V 电源插上 220V，但先不碰任何杜邦线；
+                  万用表直流电压档（20V 量程）量 DC 接头引线，应读到约 12V。
+                </li>
+                <li>
+                  <strong>查共地</strong>：万用表蜂鸣档，一支表笔接 ESP32 的 GND，
+                  另一支接模块 GND，应响。
+                </li>
+                <li><strong>查线圈</strong>：对照第 06 节的分组标记再确认一遍。</li>
+              </ol>
+              <p>
+                以上三查全部通过后，把 12V 电源接到模块 VMOT/GND，<strong>此时先不要接 ESP32 的 TypeC</strong>。
+                这是我们的「安全首通电」——只有驱动器和电源在工作，范围最小。
+              </p>
+
+              <h3>8.2 首通电检查</h3>
+              <ul>
+                <li>万用表直流 20V 档：红表笔 VMOT、黑表笔 GND，读数约 12V；</li>
+                <li>红表笔改接模块右侧 FLT 脚、黑表笔不动：读数应接近 3.3V（高电平 = 无故障，正常）；</li>
+                <li>手背轻碰散热片：微温属于正常（静止时芯片也在耗电），烫手立刻断电举手。</li>
+              </ul>
+
+              <figure class="manual-figure">
+                <img
+                  src="../assets/img/workshops/drv8825/powered-on.jpg"
+                  alt="通电后系统全景实物，含 TypeC 数据线"
+                  loading="lazy"
+                />
+                <figcaption>实物：12V 电源与 TypeC 数据线全部接通后的系统状态。</figcaption>
+              </figure>
+
+              <h3>8.3 设定电流：拧 Vref（本工作坊最重要的一步）</h3>
+              <p>
+                DRV8825 是「恒流驱动」：它不看你给多大电压，而是把线圈电流死死按在设定值上。
+                设定值由那颗小电位器决定——<strong>出厂位置完全是随机的</strong>，
+                有的板子出厂就是 0V（电机纹丝不动），有的出厂接近满格（芯片烫手）。
+                所以每一块新板都必须重新标定。
+              </p>
+              <p>这一步必须两人一组，分工如下：</p>
+              <ul>
+                <li>
+                  <strong>测量员</strong>：先把黑表笔用鳄鱼夹夹死在任意一处 GND——模块上的 GND、
+                  ESP32 的 GND、甚至直接夹到 DC 接头引出的黑线（−）上都可以，它们是同一个地。
+                  夹好后整场不再碰它，然后负责把红表笔稳稳顶在<strong>电位器金属帽的边缘</strong>
+                  （正中间的一字口留给螺丝刀），全程盯表并大声报数。
+                </li>
+                <li>
+                  <strong>操作员</strong>：双手持精密螺丝刀，从金属帽正中的一字口进入，
+                  <strong>每次只转约 1/16 圈</strong>，听到「停」立刻抬刀，等读数稳定再动。
+                </li>
+                <li>
+                  <strong>纪律</strong>：表笔一旦滑到旁边的排针上就可能造成短路——宁可慢，不许抢。
+                </li>
+              </ul>
+
+              <ol>
+                <li>
+                  万用表拨<strong>直流电压档</strong>（选 2V 或 20V 手动量程）。黑表笔接任意一处 GND，
+                  用鳄鱼夹夹牢，之后整个标定过程不再碰它。
+                </li>
+                <li>
+                  红表笔轻触<strong>电位器的金属调节帽</strong>——它内部连着滑动端，本身就是 Vref 测试点。
+                </li>
+                <li>
+                  通电状态下，操作员用精密螺丝刀每次只转一点点，测量员等读数稳定后再报数。
+                  把读数调到目标值附近（教学先设 0.5V；若电机铭牌是 1.5A，正式用可设 0.75V）。
+                </li>
+                <li>
+                  把最终读数<strong>写在便签上贴到自己的板上</strong>：这是这块板的「身份证」，
+                  换电机、换板子后要重新标定。
+                </li>
+              </ol>
+
+              <div class="manual-callout">
+                <strong>调不准很常见</strong>
+                <p>
+                  电位器行程很短，轻轻一动读数就会跳一大截，属于正常现象。诀窍：黑表笔夹牢后整场不动、
+                  红表笔只顶在金属帽边缘、手动量程、每次微调后等一两秒再读。别追求精确到第三位小数
+                  ——0.5V 和 0.55V 的区别你根本感觉不出来。
+                </p>
+              </div>
+
+              <div class="manual-callout manual-callout--warm">
+                <strong>量 Vref 期间</strong>
+                <p>
+                  电机可以不接（更安全），但模块必须通着 12V 电——它的内部稳压器和参考电压全靠
+                  VMOT 供电，断电时量到的永远是 0。
+                </p>
+              </div>
+
+              <p>
+                参考值：教学默认 0.5V ≈ 1.0A；常见 42 电机约 0.6V ≈ 1.2A；1.5A 电机的满额值是
+                0.75V。设定值永远从额定电流的 70% 起步，以「转 10 秒摸温度」为准。
+              </p>
+            </section>
+
+            <section id="flash">
+              <h2><span class="manual-num">09</span>烧录第一个程序</h2>
+
+              <h3>9.1 把 ESP32 接进系统</h3>
+              <p>
+                现在用 TypeC 数据线把 Lolin S2 mini 连到电脑。接上后系统会认出一个新的串口设备
+                （Windows 显示为 COMx）。如果电脑没反应，多半是用了纯充电线，或者缺串口驱动——举手找讲师。
+              </p>
+
+              <h3>9.2 准备 Arduino IDE</h3>
+              <ol>
+                <li>从 arduino.cc 下载并安装 <strong>Arduino IDE 2</strong>。</li>
+                <li>
+                  文件 → 首选项 →「附加开发板管理器网址」填入：
+                  <code>https://espressif.github.io/arduino-esp32/package_esp32_index.json</code>
+                </li>
+                <li>
+                  工具 → 开发板 → 开发板管理器，搜索 <code>esp32</code>，安装
+                  <strong>esp32 by Espressif Systems</strong>（要下载几百 MB，耐心等进度条走完）。
+                </li>
+                <li>
+                  工具 → 开发板 → esp32 → 选择 <strong>LOLIN S2 mini</strong>；
+                  工具 → 端口，选择刚出现的 COM 口。
+                </li>
+              </ol>
+
+              <h3>9.3 第一个程序：正转一圈，反转一圈</h3>
+              <p>
+                新建一个 sketch，整段替换成下面的代码，然后<strong>保存为一个全新的文件夹名</strong>
+                （例如 <code>MyFirstStepper</code>）。Arduino 会把同名文件夹里的多个 .ino 自动合并，
+                所以每个练习都开新文件夹是个好习惯。
+              </p>
+
+              <pre class="manual-code"><code>/* 第一个步进电机程序：全步进，正转一圈、反转一圈
+   核心思想：STEP 脚每来一个上升沿，电机就走一步。
+   接线：DIR=2 STEP=3 SLP=4 RST=5 M2=6 M1=7 M0=8 EN=9 */
+
+#define DIR_PIN   2   // 方向脚：高=顺时针，低=逆时针
+#define STEP_PIN  3   // 步进脚：每个上升沿走一步，速度由脉冲快慢决定
+#define SLEEP_PIN 4   // 睡眠控制：必须拉高；拉低=输出全关（还不报错！）
+#define RESET_PIN 5   // 复位控制：必须拉高；拉低=输出全关（还不报错！）
+#define M2_PIN    6   // ┐ 细分选择三兄弟：全低 = 全步进（200 步/圈），
+#define M1_PIN    7   // │ 高低组合决定细分倍数，
+#define M0_PIN    8   // ┘ 9.4 节的改进版会用到它们
+#define EN_PIN    9   // 使能脚：低=输出打开，高=输出关闭（电机失去力）
+
+const int stepsPerRevolution = 200;   // 全步进一圈 = 200 步（1.8° × 200 = 360°）
+
+void setup() {
+  Serial.begin(115200);            // 打开串口，方便在监视器里看进度
+
+  // 8 个引脚全部设为输出
+  pinMode(STEP_PIN,  OUTPUT);
+  pinMode(DIR_PIN,   OUTPUT);
+  pinMode(SLEEP_PIN, OUTPUT);
+  pinMode(RESET_PIN, OUTPUT);
+  pinMode(M2_PIN,    OUTPUT);
+  pinMode(M1_PIN,    OUTPUT);
+  pinMode(M0_PIN,    OUTPUT);
+  pinMode(EN_PIN,    OUTPUT);
+
+  // 打开驱动器的三个开关：这三个脚弄错，电机纹丝不动还不报错
+  digitalWrite(SLEEP_PIN, HIGH);   // SLP 低电平 = 睡眠，输出全关
+  digitalWrite(RESET_PIN, HIGH);   // RST 低电平 = 复位，输出全关
+  digitalWrite(EN_PIN,    LOW);    // EN 低电平 = 使能输出
+
+  // M0/M1/M2 全低 = 全步进模式（一圈 200 步）
+  digitalWrite(M0_PIN, LOW);
+  digitalWrite(M1_PIN, LOW);
+  digitalWrite(M2_PIN, LOW);
+
+  digitalWrite(STEP_PIN, LOW);     // STEP 脚先保持在低电平
+}
+
+void loop() {
+  digitalWrite(DIR_PIN, HIGH);       // ① 方向 = 顺时针
+  Serial.println("Spin CW...");
+  // ② 连发 200 个脉冲 = 走 200 步 = 正好一圈
+  for (int i = 0; i &lt; stepsPerRevolution; i++) {
+    digitalWrite(STEP_PIN, HIGH);    // 上升沿！转子走一步
+    delayMicroseconds(2000);         // 保持 2ms（脉冲宽度，太窄驱动器可能认不出）
+    digitalWrite(STEP_PIN, LOW);     // 拉低，为下一个脉冲做准备
+    delayMicroseconds(2000);         // 再等 2ms → 每步共 4ms
+  }
+  delay(1000);                       // ③ 停 1 秒（输出仍通电：有保持力矩）
+
+  digitalWrite(DIR_PIN, LOW);        // 换方向 = 逆时针，再来一圈
+  Serial.println("Spin CCW...");
+  for (int i = 0; i &lt; stepsPerRevolution; i++) {
+    digitalWrite(STEP_PIN, HIGH);
+    delayMicroseconds(2000);
+    digitalWrite(STEP_PIN, LOW);
+    delayMicroseconds(2000);
+  }
+  delay(1000);
+}</code></pre>
+
+              <div class="manual-callout">
+                <strong>这段代码其实只做三件事</strong>
+                <p>
+                  ① 一个脉冲 = 一步：STEP 脚从 LOW 变 HIGH 的瞬间，转子就走一步。
+                  ② DIR 决定方向：DIR 高电平顺时针、低电平逆时针，只在换向时改一次。
+                  ③ SLP / RST / EN 是三个开关：SLP 和 RST 必须拉高（拉低 = 睡眠/复位，
+                  输出全关且不报错），EN 拉低才打开输出；M0/M1/M2 是细分选择，全低 = 全步进。
+                </p>
+              </div>
+
+              <p>
+                速度由 <code>delayMicroseconds(2000)</code> 决定：一个脉冲周期 = 2000 + 2000 = 4000µs，
+                200 步 × 4ms ≈ 0.8 秒一圈（约 75 rpm）。想快就把数字改小——但改太小电机来不及走，
+                会「丢步」反而抖。
+              </p>
+
+              <ol>
+                <li>点击左上角<strong>「→」上传</strong>按钮。第一次编译较慢。</li>
+                <li>
+                  如果报「找不到端口」或上传失败：按住板上的 <strong>BOOT 键</strong>再点上传，
+                  出现进度后松开。
+                </li>
+                <li>
+                  上传成功后，打开<strong>串口监视器</strong>（右上角放大镜图标），波特率选
+                  <strong>115200</strong>，按下板上复位键 RST 重新启动程序。
+                </li>
+              </ol>
+
+              <div class="manual-callout manual-callout--warm">
+                <strong>「嗒嗒」声不是故障</strong>
+                <p>
+                  这个程序故意写得最简单，方便你看懂「脉冲 → 步进」的本质，但它有一个明显的副作用：
+                  噪音和抖动比较大。全步进模式下每一步都是一次「猛吸」式的机械冲击，75 rpm 的步频
+                  正好让这些冲击连成明显的「嗒嗒」声，甚至引发共振。下一步我们用改进版把它治好。
+                </p>
+              </div>
+
+              <h3>9.4 体验任务：换上「平滑版」程序</h3>
+              <p>改进版把三招一起用上，<strong>接线一根都不用改</strong>：</p>
+              <ol>
+                <li>
+                  <strong>提高细分</strong>：M2 拉高切到 1/16 细分，一圈 200 步变 3200 步——
+                  一次大冲击被拆成 16 次小冲击，声音从「嗒嗒」变成几乎听不见的「沙沙」；
+                  同时约 47 rpm 的运行速度避开了 10~20 rpm 的中频共振区。
+                </li>
+                <li><strong>缓启缓停</strong>：起步 200 步渐快、停止 200 步渐慢，消除起步和换向的「哐当」顿挫。</li>
+                <li><strong>静止降流</strong>：停顿时拉高 EN 关闭输出，电机和芯片都休息（代价：停顿时失去保持力矩）。</li>
+              </ol>
+              <p>
+                新建一个 sketch 文件夹（例如 <code>MySmoothStepper</code>），整段替换成下面的代码上传：
+              </p>
+
+              <pre class="manual-code"><code>/* 改进版：平滑步进 —— 高细分 + 缓启缓停 + 静止降流
+   接线与第一个程序完全相同，一根线都不用改！
+   三处变化：
+   ① M2 = HIGH：1/16 细分，一圈从 200 步变成 3200 步
+   ② 起步 / 停止各用 200 步做「渐快 / 渐慢」坡道
+   ③ 停顿时拉高 EN 关闭输出，电机和芯片都休息 */
+
+// ---------- 引脚定义（与第一个程序完全一致） ----------
+#define DIR_PIN   2   // 方向脚
+#define STEP_PIN  3   // 步进脚：每个上升沿走一步
+#define SLEEP_PIN 4   // 睡眠控制，必须拉高
+#define RESET_PIN 5   // 复位控制，必须拉高
+#define M2_PIN    6   // ┐
+#define M1_PIN    7   // ├ 细分选择：M2=1、M1=0、M0=0 → 1/16 细分
+#define M0_PIN    8   // ┘
+#define EN_PIN    9   // 使能：低=输出开，高=输出关
+
+// ---------- 运动参数（想调速度 / 平顺度就动这三行） ----------
+#define STEPS_PER_REV 3200  // 一圈的步数：1/16 细分 = 200 × 16。改细分数必须同步改这里！
+#define HALF_US_MIN   200   // 全速时半步间隔(µs)：200+200 = 400µs/步 ≈ 47rpm，避开共振区
+#define RAMP_STEPS    200   // 起步和停止各用多少步完成渐变
+
+// 生成一个 STEP 脉冲：us 是高、低电平各占的时间
+void stepPulse(int us) {
+  digitalWrite(STEP_PIN, HIGH);  // 上升沿 = 走一步
+  delayMicroseconds(us);
+  digitalWrite(STEP_PIN, LOW);   // 拉低，为下一个脉冲做准备
+  delayMicroseconds(us);
+}
+
+// 走 n 步，cw 决定方向（true = 顺时针），自带缓启缓停
+void moveSteps(int n, bool cw) {
+  digitalWrite(DIR_PIN, cw ? HIGH : LOW);  // 先给方向信号
+  delayMicroseconds(20);                   // 等 20µs，让方向信号「生效」
+  for (int i = 0; i &lt; n; i++) {
+    int us = HALF_US_MIN;                  // 中段：全速
+    int edge = min(i, n - 1 - i);          // 距离起点 / 终点，哪边更近
+    if (edge &lt; RAMP_STEPS) {               // 在坡道范围内 → 按比例渐变速度
+      int startUs = HALF_US_MIN * 4;       // 坡道起点比全速慢 4 倍（起步很温柔）
+      us = startUs - (long)(startUs - HALF_US_MIN) * edge / RAMP_STEPS;
+    }
+    stepPulse(us);
+  }
+}
+
+void setup() {
+  Serial.begin(115200);
+  delay(300);
+
+  // 8 个引脚全部输出（和第一个程序相同）
+  pinMode(STEP_PIN, OUTPUT);
+  pinMode(DIR_PIN, OUTPUT);
+  pinMode(SLEEP_PIN, OUTPUT);
+  pinMode(RESET_PIN, OUTPUT);
+  pinMode(M2_PIN, OUTPUT);
+  pinMode(M1_PIN, OUTPUT);
+  pinMode(M0_PIN, OUTPUT);
+  pinMode(EN_PIN, OUTPUT);
+
+  digitalWrite(STEP_PIN, LOW);
+  digitalWrite(SLEEP_PIN, HIGH);   // 唤醒驱动器
+  digitalWrite(RESET_PIN, HIGH);   // 解除复位
+  digitalWrite(EN_PIN,    LOW);    // 使能输出
+
+  digitalWrite(M2_PIN, HIGH);      // ★ 与第一个程序唯一的「设置」差别：
+  digitalWrite(M1_PIN, LOW);       //   M2=1、M1=0、M0=0 → 1/16 细分
+  digitalWrite(M0_PIN, LOW);
+}
+
+// 停顿期间断电休息：芯片不再斩波发热，但电机失去保持力矩
+void idle(unsigned long ms) {
+  digitalWrite(EN_PIN, HIGH);    // 关闭输出，线圈断电
+  delay(ms);
+  digitalWrite(EN_PIN, LOW);     // 恢复输出
+  delay(5);                      // 等 5ms 让电流重新建立
+}
+
+void loop() {
+  Serial.println("CW");
+  moveSteps(STEPS_PER_REV, true);   // 顺时针一圈（3200 步，带坡道）
+  idle(800);                        // 停 0.8 秒（断电休息）
+  Serial.println("CCW");
+  moveSteps(STEPS_PER_REV, false);  // 逆时针一圈
+  idle(800);
+}</code></pre>
+
+              <p>上传后打开串口监视器（115200），和第一个程序<strong>对比听感</strong>：</p>
+              <ul>
+                <li>竖起耳朵听换向瞬间：第一个程序换向时有一声「哐」的顿挫，改进版呢？</li>
+                <li>运行 1 分钟后摸散热片，和第一个程序运行同样时间相比有什么不同？</li>
+                <li>想想再回答：为什么步数从 200 改成 3200 之后，转速没有变成 16 倍？</li>
+              </ul>
+              <p>
+                因为真正的速度由每个脉冲的间隔（<code>HALF_US_MIN</code>）决定：200 + 200 = 400µs/步，
+                3200 步约 1.3 秒一圈（约 47 rpm）。如果改了细分却忘了把步数 ×16，200 个脉冲在
+                1/16 细分下只走 1/16 圈，看起来就像「又不转了」——这是改细分最容易踩的坑。
+              </p>
+            </section>
+
+            <section id="checkpoints">
+              <h2><span class="manual-num">10</span>预期现象与检查点</h2>
+              <ul>
+                <li>电机以稳定的慢速正转约 0.8 秒（一圈），停 1 秒，再反转一圈，循环往复；</li>
+                <li>转动时能听到均匀的「嗒嗒」步进声——这是全步进模式的正常声音，不是故障；</li>
+                <li>
+                  体验过 9.4 平滑版后再对比：声音变成连续细微的「沙沙」、起步和换向的顿挫消失
+                  ——两种程序的差异，就是「细分 + 坡道」的作用；
+                </li>
+                <li>串口监视器循环打印 <code>Spin CW... / Spin CCW...</code>；</li>
+                <li>用手轻捏电机轴能感到明显的「锁住」的力（保持力矩），断电后消失；</li>
+                <li>通电 2 分钟后散热片只是温热，手可以一直放上去。</li>
+              </ul>
+              <p>全部符合？你已经独立完成了一套完整的运动控制系统。</p>
+
+              <h3>两个值得记住的现象</h3>
+              <p>
+                <strong>为什么静止时芯片也发热？</strong>
+                DRV8825 是恒流驱动，为了「锁住」转子，静止时依然在给线圈持续通电并高速斩波。
+                所以发热功率和转不转关系不大，和电流设定关系最大。
+              </p>
+              <p>
+                <strong>为什么用手转轴有一卡一卡的感觉？</strong>
+                断电时的齿槽转矩（转子的永磁体被定子齿槽吸引）+ 通电后的保持力矩，
+                都是电机固有特性，不是故障。
+              </p>
+            </section>
+
+            <section id="troubleshooting">
+              <h2><span class="manual-num">11</span>排错锦囊</h2>
+              <p>电机不转时，按表格从上往下对号入座。前两行覆盖了新手 80% 的故障。</p>
+
+              <table class="manual-table">
+                <thead>
+                  <tr>
+                    <th>现象</th>
+                    <th>最可能的原因</th>
+                    <th>怎么办</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>完全不动、没声音、轴也没力矩</td>
+                    <td>SLP/RST 被拉低；EN 没拉低；VMOT 没电；Vref 为 0</td>
+                    <td>万用表量 GPIO4/5/9 应为 3.3/3.3/0V；量 VMOT 应为 12V；量 Vref</td>
+                  </tr>
+                  <tr>
+                    <td>FLT 是高电平，但电机纹丝不动</td>
+                    <td>RST=0（复位会关闭全部输出，但不算故障，FLT 照样高）</td>
+                    <td>量 RST 对 GND 是否 3.3V；检查 GPIO5 那根线是否插到了别的脚</td>
+                  </tr>
+                  <tr>
+                    <td>嗡嗡响、只抖动不转</td>
+                    <td>两组线圈跨相混接；或 Vref 太低力矩不足</td>
+                    <td>回到第 06 节重新分组；把 Vref 小幅调高</td>
+                  </tr>
+                  <tr>
+                    <td>转几下就停、时转时不转、芯片烫手</td>
+                    <td>Vref 过高触发过热保护；没贴散热片；缺 100µF 电容；电源带载掉压</td>
+                    <td>降 Vref；确认散热片；补电容；让电机转着量 VMOT 是否掉到 10V 以下</td>
+                  </tr>
+                  <tr>
+                    <td>转是转了，但一直有轻微生涩感</td>
+                    <td>1/2 细分的步进感 + 无加减速；齿槽转矩是固有特性</td>
+                    <td>改 1/16 细分（M2=1，步数改 3200）并加缓启缓停；剩余颗粒感属物理极限</td>
+                  </tr>
+                  <tr>
+                    <td>电位器轻轻一动读数变化很大</td>
+                    <td>单圈电位器行程短，目标值只占全行程的一小段</td>
+                    <td>表笔用夹子固定、万用表手动量程、每次只蹭一点点</td>
+                  </tr>
+                  <tr>
+                    <td>上传失败 / 找不到端口</td>
+                    <td>没装 ESP32 支持包；数据线是充电线；串口被占用</td>
+                    <td>装驱动与支持包；换数据线；按住 BOOT 再上传</td>
+                  </tr>
+                  <tr>
+                    <td>明明改了代码，现象没变化</td>
+                    <td>Arduino IDE 里旧 sketch 的编辑缓冲把新文件覆盖了</td>
+                    <td>关掉 IDE 里旧的 sketch 再打开新目录；每个练习用独立文件夹</td>
+                  </tr>
+                  <tr>
+                    <td>换了一颗电机后行为完全不同</td>
+                    <td>不同电机额定电流不同，Vref 必须重新标定；极低阻电机与 DRV8825 不匹配</td>
+                    <td>按新电机铭牌重算 Vref；先量线圈电阻，1~3Ω 的低阻大电流电机建议换 TB6600 等大电流驱动</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+
+            <section id="challenges">
+              <h2><span class="manual-num">12</span>进阶挑战</h2>
+              <p>完成基础版后，按顺序挑战。每一条都能直接感知到差别：</p>
+              <ul>
+                <li>
+                  <strong>更细挑战 · 1/32 细分</strong>：在 9.4 平滑版基础上把 M0 也拉高
+                  （M2=1、M1=0、M0=1 = 1/32 细分），同时把 <code>STEPS_PER_REV</code> 改成 6400。
+                  声音还能更细吗？注意步数忘了改的话，3200 个脉冲在 1/32 下只走半圈，看起来像「变慢了」。
+                </li>
+                <li>
+                  <strong>保护挑战 · 补上 100µF 电容</strong>：断电状态下把电解电容长脚（正极）插 VMOT、
+                  短脚插旁边 GND，越贴近模块越好。装好电容后重跑程序确认一切正常，再查一查资料：
+                  电源线长了为什么会产生超过 45V 的电压尖峰？（关键词：寄生电感、LC 尖峰）
+                </li>
+                <li>
+                  <strong>调参挑战 · 动坡道参数</strong>：在 9.4 平滑版上，把 <code>RAMP_STEPS</code>
+                  从 200 改成 20 再改成 400，起步的「哐当」感有什么变化？把 <code>HALF_US_MIN</code>
+                  从 200 改成 100（约 94 rpm）再改回 200，哪种更顺？记住关系式：一圈时长 ≈ 步数 × 脉冲间隔 × 2。
+                </li>
+                <li>
+                  <strong>降温挑战 · 静止降流</strong>：把 <code>idle()</code> 里的 <code>800</code>
+                  改成 <code>3000</code>，长时间运行后摸芯片对比温度；思考代价是什么
+                  （停顿时失去保持力矩，用手就能拧动轴）。
+                </li>
+                <li>
+                  <strong>工程挑战 · 上 AccelStepper 库</strong>：用库的 setMaxSpeed / setAcceleration
+                  实现 S 曲线运动，体会「库帮你做好了运动规划」。
+                </li>
+                <li>
+                  <strong>视野挑战 · 查一查工业现场</strong>：产线上用的是雷赛 DM 系列、鸣志这类成品工业驱动器
+                  （内部是 32 位 DSP + 分立功率管，电流细分全靠拨码或软件，根本没有难调的 Vref 电位器），
+                  多轴同步走 EtherCAT 总线。你今天学的斩波恒流、细分、STEP/DIR 概念，在那里全部通用。
+                </li>
+              </ul>
+            </section>
+
+            <section id="appendix">
+              <h2><span class="manual-num">13</span>附录</h2>
+
+              <h3>13.1 引脚对照表（贴在你的套件盒上）</h3>
+              <table class="manual-table">
+                <thead>
+                  <tr>
+                    <th>DRV8825 引脚</th>
+                    <th>接 ESP32</th>
+                    <th>作用</th>
+                    <th>备注</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>DIR</td>
+                    <td>GPIO2</td>
+                    <td>方向</td>
+                    <td>高/低 = 两个方向</td>
+                  </tr>
+                  <tr>
+                    <td>STEP</td>
+                    <td>GPIO3</td>
+                    <td>步进脉冲</td>
+                    <td>每个上升沿走一步</td>
+                  </tr>
+                  <tr>
+                    <td>SLP</td>
+                    <td>GPIO4</td>
+                    <td>睡眠控制</td>
+                    <td><strong>必须拉高</strong>，低 = 输出全关</td>
+                  </tr>
+                  <tr>
+                    <td>RST</td>
+                    <td>GPIO5</td>
+                    <td>复位控制</td>
+                    <td><strong>必须拉高</strong>，低 = 输出全关且不报错</td>
+                  </tr>
+                  <tr>
+                    <td>M2 / M1 / M0</td>
+                    <td>GPIO6 / 7 / 8</td>
+                    <td>细分设置</td>
+                    <td>全 LOW = 全步；M2 高 = 1/16</td>
+                  </tr>
+                  <tr>
+                    <td>EN</td>
+                    <td>GPIO9</td>
+                    <td>输出使能</td>
+                    <td>低电平 = 工作；高 = 断电保持消失</td>
+                  </tr>
+                  <tr>
+                    <td>VMOT / GND</td>
+                    <td>12V 电源 ±</td>
+                    <td>功率电源</td>
+                    <td>进阶阶段就近并 100µF 电解电容</td>
+                  </tr>
+                  <tr>
+                    <td>GND（另一颗）</td>
+                    <td>ESP32 GND</td>
+                    <td>共地</td>
+                    <td>不接则全部信号无意义</td>
+                  </tr>
+                  <tr>
+                    <td>A1/A2、B1/B2</td>
+                    <td>电机两组线圈</td>
+                    <td>线圈输出</td>
+                    <td>组内可互换（仅改变转向）</td>
+                  </tr>
+                  <tr>
+                    <td>FLT</td>
+                    <td>不接</td>
+                    <td>故障指示</td>
+                    <td>高 = 正常；低 = 过流/过热/欠压</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <h3>13.2 Vref 速查表</h3>
+              <p>DRV8825 常规模块：限流 = Vref × 2。</p>
+              <table class="manual-table">
+                <thead>
+                  <tr>
+                    <th>Vref</th>
+                    <th>限流</th>
+                    <th>适合的电机</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>0.4 V</td>
+                    <td>0.8 A</td>
+                    <td>小机座 / 低电流电机</td>
+                  </tr>
+                  <tr>
+                    <td>0.5 V</td>
+                    <td>1.0 A</td>
+                    <td>教学默认起步值</td>
+                  </tr>
+                  <tr>
+                    <td>0.6 V</td>
+                    <td>1.2 A</td>
+                    <td>常见 42 电机（约 80%）</td>
+                  </tr>
+                  <tr>
+                    <td>0.75 V</td>
+                    <td>1.5 A</td>
+                    <td>1.5A 电机的满额值</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p>
+                DRV8825 裸板无散热长期约 1A/相，贴散热片可到约 1.5A；标称 2.5A 是理想散热下的峰值。
+              </p>
+
+              <h3>13.3 术语小词典</h3>
+              <ul>
+                <li>
+                  <strong>全步 / 细分</strong>：把 1.8° 的一步再切成 2~32 份，切得越细转动越顺、噪音越小，
+                  但同样转速需要的脉冲数成倍增加。
+                </li>
+                <li><strong>保持转矩</strong>：通电锁定时电机能抵抗的最大外力，是步进电机最重要的参数。</li>
+                <li>
+                  <strong>齿槽转矩</strong>：断电时转子被永磁体和齿槽吸引产生的「一卡一卡」感，
+                  是固有特性，无法通过驱动消除。
+                </li>
+                <li>
+                  <strong>斩波恒流</strong>：驱动器用高速开关把线圈电流死死按在设定值上，与供电电压关系不大
+                  ——这就是为什么 12V 供电能驱动额定电压只有几伏的线圈。
+                </li>
+                <li>
+                  <strong>TSD / UVLO / OCP</strong>：过热关断（约 165°C）/ 欠压锁定（VMOT 低于约 8.2V）/
+                  过流保护，三者都会关输出，其中只有 UVLO 和 OCP 会拉低 FLT。
+                </li>
+                <li><strong>共地</strong>：两块电路板必须连接同一个地，所有「高电平/低电平」才有统一的参照。</li>
+              </ul>
+            </section>
+
+            <section id="host-notes">
+              <h2><span class="manual-num">14</span>讲师备忘</h2>
+
+              <h3>课前准备</h3>
+              <ul class="manual-checklist">
+                <li>
+                  <label class="manual-check">
+                    <input type="checkbox" id="host-1" data-check />
+                    <span>每桌追加 100µF/25V 电解电容 ×1，本次不接线，由讲师保管发放；备若干 2512 封装备件。</span>
+                  </label>
+                </li>
+                <li>
+                  <label class="manual-check">
+                    <input type="checkbox" id="host-2" data-check />
+                    <span>备用 DRV8825 模块 ≥ 2 块（总有学员把电位器拧坏或接反电源）；备用 42 电机 1 台。</span>
+                  </label>
+                </li>
+                <li>
+                  <label class="manual-check">
+                    <input type="checkbox" id="host-3" data-check />
+                    <span>所有学员用电源提前串接测试过，桌插排限流 2A 以上。</span>
+                  </label>
+                </li>
+                <li>
+                  <label class="manual-check">
+                    <input type="checkbox" id="host-4" data-check />
+                    <span>提前在教师机装好 Arduino IDE 2 + ESP32 支持包，或准备离线安装包；教室网络慢时尤其重要。</span>
+                  </label>
+                </li>
+                <li>
+                  <label class="manual-check">
+                    <input type="checkbox" id="host-5" data-check />
+                    <span>防静电腕带可选；至少保证学员贴散热片、插模块前先摸一下金属桌面放电。</span>
+                  </label>
+                </li>
+                <li>
+                  <label class="manual-check">
+                    <input type="checkbox" id="host-6" data-check />
+                    <span>把接线总图打印成 A4 发到每桌，比盯着屏幕接线效率高得多。</span>
+                  </label>
+                </li>
+                <li>
+                  <label class="manual-check">
+                    <input type="checkbox" id="host-7" data-check />
+                    <span>演示用万用表表笔建议换鳄鱼夹，学员空出双手调电位器。</span>
+                  </label>
+                </li>
+              </ul>
+
+              <h3>常见现场事故与处置</h3>
+              <ul>
+                <li>
+                  <strong>闻到焦味 / 电容鼓包</strong>：立即断电。多半是电源反接或 100µF 极性反，
+                  检查后更换模块与电容。
+                </li>
+                <li><strong>电机剧烈抖动、嗡嗡响</strong>：90% 是线圈跨相，10% 是 Vref 过高。先重新分组再调电流。</li>
+                <li>
+                  <strong>芯片烫到无法触碰</strong>：断电冷却，Vref 降到 0.4V 以下重测；确认散热片已贴。
+                  若 Vref 已低仍烫，直接换板。
+                </li>
+                <li><strong>整组都报「找不到端口」</strong>：教室网络导致 ESP32 支持包没装全；用离线包。</li>
+                <li>
+                  <strong>个别板子「怎么调都不动」</strong>：用万用表量 RST 是否 3.3V——本手册排错表第二行，
+                  历史上命中率极高。
+                </li>
+              </ul>
+            </section>
+
+            <p class="manual-source">
+              原始文档：
+              <a href="https://gitee.com/zaoyige/tryesp32/tree/master/workshop/drv8825-stepmotor" target="_blank" rel="noopener"
+                >gitee.com/zaoyige/tryesp32 · DRV8825 workshop ↗</a
+              >
+              <br />参考教程：lastminuteengineers.com《Interface DRV8825 Stepper Motor Driver with Arduino》·
+              TI DRV8825 Datasheet
+            </p>
+
+            <div class="manual-end">
+              <a class="btn btn--ghost" href="index.html"
+                >返回手册目录 <span class="arr" aria-hidden="true">→</span></a
+              >
+              <a class="btn btn--ghost" href="../join.html"
+                >一起设计工作坊 <span class="arr" aria-hidden="true">↗</span></a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <div class="footer-bottom">
+          <span>© <span data-year>2026</span> 地火创客 · DIHUOLAB</span>
+          <span>BUILT BY MAKERS · 地下之火，仍在燃烧</span>
+        </div>
+      </div>
+    </footer>
+
+    <script src="../assets/js/site.js" defer></script>
+    <script src="../assets/js/workshops.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,1466 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Make the Motor Turn · ESP32 + DRV8825 Stepper Workshop · DIHUOLAB</title>
+    <meta
+      name="description"
+      content="A 90-minute beginner workshop: use an ESP32-S2, DRV8825 and a 42 stepper motor to identify parts, find coils, wire, set current and flash a program that spins the motor both ways."
+    />
+    <meta name="theme-color" content="#08080a" />
+    <link rel="icon" href="../../assets/img/favicon.png" type="image/png" />
+    <link rel="canonical" href="https://dihuolab.github.io/weblog/en/workshops/drv8825-stepmotor.html" />
+    <link rel="alternate" hreflang="zh-CN" href="https://dihuolab.github.io/weblog/workshops/drv8825-stepmotor.html" />
+    <link rel="alternate" hreflang="en" href="https://dihuolab.github.io/weblog/en/workshops/drv8825-stepmotor.html" />
+    <link rel="alternate" hreflang="x-default" href="https://dihuolab.github.io/weblog/workshops/drv8825-stepmotor.html" />
+    <link rel="stylesheet" href="../../assets/css/style.css" />
+    <link rel="stylesheet" href="../../assets/css/workshops.css" />
+    <script>
+      document.documentElement.classList.add("js");
+    </script>
+
+    <meta property="og:type" content="article" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="zh_CN" />
+    <meta property="og:site_name" content="DIHUOLAB" />
+    <meta property="og:title" content="Make the Motor Turn · ESP32 + DRV8825 Stepper Workshop" />
+    <meta
+      property="og:description"
+      content="A 90-minute beginner workshop: identify parts, find coils, wire, set current and flash a program that spins the motor both ways."
+    />
+    <meta property="og:url" content="https://dihuolab.github.io/weblog/en/workshops/drv8825-stepmotor.html" />
+    <meta
+      property="og:image"
+      content="https://dihuolab.github.io/weblog/assets/img/workshops/drv8825/full-wiring.jpg"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+  </head>
+
+  <body data-page="workshops" class="manual-page">
+    <a class="skip-link" href="#main">Skip to main content</a>
+
+    <header class="site-header" data-header>
+      <div class="container header-inner">
+        <a class="brand" href="../index.html" aria-label="DIHUOLAB · Home">
+          <img
+            class="brand-mark"
+            src="../../assets/img/logo-mark.png"
+            alt=""
+            width="30"
+            height="23"
+          />
+          <span class="brand-text">
+            <strong>DIHUOLAB</strong>
+            <span>MAKERSPACE</span>
+          </span>
+        </a>
+
+        <div class="header-actions">
+          <a class="lang-toggle" href="../../workshops/drv8825-stepmotor.html" hreflang="zh-CN" lang="zh-CN" aria-label="Switch to Chinese">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <circle cx="12" cy="12" r="9"></circle>
+              <path d="M3 12h18M12 3c2.5 2.4 3.8 5.6 3.8 9s-1.3 6.6-3.8 9c-2.5-2.4-3.8-5.6-3.8-9S9.5 5.4 12 3Z"></path>
+            </svg>
+            <span>中文</span>
+          </a>
+          <button
+            class="menu-toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="site-nav"
+            aria-label="Open menu"
+          >
+            <span></span>
+            <span></span>
+          </button>
+
+          <nav class="site-nav" id="site-nav" aria-label="Main navigation">
+            <a href="../index.html">Home</a>
+            <a href="../about.html">About</a>
+            <a href="../projects.html">Projects</a>
+            <a href="index.html" aria-current="page">Workshops</a>
+            <a href="../news.html">Log</a>
+            <a class="nav-cta" href="../join.html">Join us <span aria-hidden="true">↗</span></a>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <main id="main" class="manual-main">
+      <div class="container">
+        <div class="manual-shell">
+          <aside class="manual-toc" data-manual-toc>
+            <span class="mono">On this page</span>
+            <nav data-toc-list aria-label="On this page"></nav>
+          </aside>
+
+          <div class="manual-content">
+            <a class="crumb" href="index.html">Workshops <span>/</span> Manuals / DRV8825</a>
+
+            <span class="manual-kicker">WORKSHOP MANUAL / 01</span>
+            <h1>Make the motor turn</h1>
+            <p class="manual-lead">
+              ESP32-S2 + DRV8825 stepper motor workshop. Today you will make a real
+              stepper motor turn with a program you wrote yourself. 3D printers, CNC
+              routers, label machines and camera sliders all run on the same core:
+              a stepper motor, a driver, and a board that sends pulses. You are building
+              their smallest working prototype today.
+            </p>
+
+            <div class="manual-meta">
+              <div>
+                <span>Length</span>
+                <strong>About 90 min</strong>
+              </div>
+              <div>
+                <span>Group</span>
+                <strong>Pairs</strong>
+              </div>
+              <div>
+                <span>Level</span>
+                <strong>Beginner</strong>
+              </div>
+              <div>
+                <span>Updated</span>
+                <strong>2026-11-17</strong>
+              </div>
+            </div>
+
+            <div class="manual-actions">
+              <button class="manual-action" type="button" data-print>
+                Print / save as PDF
+              </button>
+              <button
+                class="manual-action"
+                type="button"
+                data-focus-toggle
+                aria-pressed="false"
+              >
+                On-site mode
+              </button>
+              <button class="manual-action" type="button" data-reset-checks>
+                Clear checks
+              </button>
+            </div>
+
+            <div class="manual-progress">
+              <span>Checklist progress</span>
+              <strong data-check-progress>0 / 0</strong>
+            </div>
+
+            <section id="overview">
+              <h2><span class="manual-num">01</span>Goals and schedule</h2>
+              <p>
+                This is not a demo. Everyone wires, measures voltage, sets current and
+                flashes the board themselves, then makes the motor turn one revolution
+                forward and one back.
+              </p>
+
+              <h3>By the end, you will be able to</h3>
+              <ul>
+                <li>Identify what every part in the kit does and connect them correctly.</li>
+                <li>Find the two coils of a stepper motor with a multimeter instead of guessing wire order.</li>
+                <li>Understand and set the driver current limit (Vref), and know why you must not turn it blindly.</li>
+                <li>Flash your first program and make the motor turn one revolution each way.</li>
+              </ul>
+
+              <div class="manual-callout">
+                <strong>Format</strong>
+                <p>Hands-on build plus a troubleshooting challenge. Success means the motor turns both ways, the chip runs at a normal temperature, and the wiring survives a review.</p>
+              </div>
+
+              <h3>90-minute schedule</h3>
+              <table class="manual-table">
+                <thead>
+                  <tr>
+                    <th>Time</th>
+                    <th>Block</th>
+                    <th>What you do</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>10 min</td>
+                    <td>Opening + safety</td>
+                    <td>Listen, read section 02</td>
+                  </tr>
+                  <tr>
+                    <td>15 min</td>
+                    <td>Meet the parts + heatsink</td>
+                    <td>Work through sections 03 and 05</td>
+                  </tr>
+                  <tr>
+                    <td>20 min</td>
+                    <td>Find coils + wire up</td>
+                    <td>Sections 06 and 07, check every wire</td>
+                  </tr>
+                  <tr>
+                    <td>15 min</td>
+                    <td>Power checks + current</td>
+                    <td>Section 08, measure voltage, set Vref</td>
+                  </tr>
+                  <tr>
+                    <td>20 min</td>
+                    <td>Flash the program</td>
+                    <td>Section 09, make it turn</td>
+                  </tr>
+                  <tr>
+                    <td>10 min</td>
+                    <td>Troubleshooting + wrap-up</td>
+                    <td>Use section 11</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+
+            <section id="safety">
+              <h2><span class="manual-num">02</span>Safety first (read this)</h2>
+              <p>
+                This kit runs at 12V, a safe voltage that will not shock you. But the
+                four rules below are like traffic rules: break them and you will not lose
+                a component, you will lose your whole afternoon.
+              </p>
+
+              <div class="manual-callout">
+                <strong>Rule 1 · Never plug or unplug anything while powered</strong>
+                <p>
+                  Motor wires, power wires, jumper wires — all the same. Voltage spikes
+                  from hot-plugging can destroy the driver chip in an instant. To touch a
+                  wire, unplug the 12V supply first.
+                </p>
+              </div>
+
+              <div class="manual-callout">
+                <strong>Rule 2 · Never reverse the power polarity</strong>
+                <p>
+                  VMOT to red (+), GND to black (−). Reverse it once and the module is
+                  gone. After wiring the supply, raise your hand for the host to check
+                  before powering up.
+                </p>
+              </div>
+
+              <div class="manual-callout">
+                <strong>Rule 3 · Never leave metal tools on a powered board</strong>
+                <p>
+                  Screwdrivers, tweezers, clipped leads — anything that lands on the board
+                  is a short circuit. Put tools back outside the edge of the bench when
+                  you are done.
+                </p>
+              </div>
+
+              <div class="manual-callout">
+                <strong>Rule 4 · Feel the chip before you touch it</strong>
+                <p>
+                  The driver gets warm in normal use. If it is too hot to hold, the current
+                  is set too high or cooling is inadequate. The internal thermal protection
+                  is already cycling the output off — let it cool, do not push through.
+                </p>
+              </div>
+
+              <div class="manual-callout manual-callout--warm">
+                <strong>Good to know</strong>
+                <p>
+                  Everything here runs at 12V. Real industrial drives use 24V or higher and
+                  stricter rules, but “power off, then touch wires, then verify polarity”
+                  applies at every voltage.
+                </p>
+              </div>
+            </section>
+
+            <section id="materials">
+              <h2><span class="manual-num">03</span>Materials and tools</h2>
+              <p>This is everything that should be on your bench. Count it before the session and raise a hand if anything is missing.</p>
+
+              <figure class="manual-figure">
+                <img
+                  src="../../assets/img/workshops/drv8825/kit-with-tools.jpg"
+                  alt="Overhead photo of the full kit: multimeter, precision screwdriver, 12V supply, 42 stepper motor, DRV8825 module, Lolin S2 mini, DC adapter, splice connectors, jumper wires and a TypeC cable"
+                  loading="lazy"
+                />
+                <figcaption>The full kit. Your bench should match this photo after check-in.</figcaption>
+              </figure>
+
+              <table class="manual-table">
+                <thead>
+                  <tr>
+                    <th>Item</th>
+                    <th>Qty</th>
+                    <th>Purpose</th>
+                    <th>Watch out</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>42 stepper motor</td>
+                    <td>1</td>
+                    <td>The actuator and the star of the day: 4 wires, 2 coils</td>
+                    <td>It has a connector; do not pull on the wires</td>
+                  </tr>
+                  <tr>
+                    <td>DRV8825 driver module</td>
+                    <td>1</td>
+                    <td>Turns weak logic signals into motor power; heatsink included</td>
+                    <td>ESD sensitive — hold the edges, not the chip</td>
+                  </tr>
+                  <tr>
+                    <td>Lolin S2 mini (ESP32-S2)</td>
+                    <td>1</td>
+                    <td>The brain that sends pulses</td>
+                    <td>Follow the silkscreen for pin orientation</td>
+                  </tr>
+                  <tr>
+                    <td>12V switching supply</td>
+                    <td>1</td>
+                    <td>Power source for the motor</td>
+                    <td>Check the output labels; do not reverse polarity</td>
+                  </tr>
+                  <tr>
+                    <td>DC adapter (female)</td>
+                    <td>1</td>
+                    <td>Plugs into the supply and exposes red/black leads</td>
+                    <td>Red = +12V, black = GND</td>
+                  </tr>
+                  <tr>
+                    <td>2-way splice connectors</td>
+                    <td>2</td>
+                    <td>Convert the DC adapter leads into jumper connections</td>
+                    <td>Make sure they are fully seated before crimping</td>
+                  </tr>
+                  <tr>
+                    <td>Jumper wires (M-M / M-F)</td>
+                    <td>Several</td>
+                    <td>All signal and power connections</td>
+                    <td>Suggested colour code: red positive, black negative</td>
+                  </tr>
+                  <tr>
+                    <td>Multimeter</td>
+                    <td>1</td>
+                    <td>Find coils, measure voltage, set current — the second star</td>
+                    <td>Confirm the mode before measuring</td>
+                  </tr>
+                  <tr>
+                    <td>Precision screwdriver</td>
+                    <td>1</td>
+                    <td>Adjust the Vref potentiometer and disassembly</td>
+                    <td>Never lay the metal shaft on a powered board</td>
+                  </tr>
+                  <tr>
+                    <td>Laptop + TypeC data cable</td>
+                    <td>1</td>
+                    <td>Write code, flash, read serial output</td>
+                    <td>Must be a data cable, not charge-only</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div class="manual-gallery">
+                <figure class="manual-figure">
+                  <img
+                    src="../../assets/img/workshops/drv8825/psu-12v.jpg"
+                    alt="12V 2.5A power adapter"
+                    loading="lazy"
+                  />
+                  <figcaption>12V switching supply (12V ⎓ 2.5A · 30W output)</figcaption>
+                </figure>
+                <figure class="manual-figure">
+                  <img
+                    src="../../assets/img/workshops/drv8825/dc-adapter.jpg"
+                    alt="Female DC adapter with a green screw terminal"
+                    loading="lazy"
+                  />
+                  <figcaption>Female DC adapter — match the + and − markings to the wire colours</figcaption>
+                </figure>
+                <figure class="manual-figure">
+                  <img
+                    src="../../assets/img/workshops/drv8825/wago-terminals.jpg"
+                    alt="Two white push-in splice connectors"
+                    loading="lazy"
+                  />
+                  <figcaption>2-way splice connectors ×2 (push-in type)</figcaption>
+                </figure>
+                <figure class="manual-figure">
+                  <img
+                    src="../../assets/img/workshops/drv8825/dupont-wires.jpg"
+                    alt="A bundle of red, yellow and black jumper wires"
+                    loading="lazy"
+                  />
+                  <figcaption>Male-male / male-female jumper wires</figcaption>
+                </figure>
+              </div>
+
+              <div class="manual-callout manual-callout--warm">
+                <strong>Advanced part (not handed out today)</strong>
+                <p>
+                  One 100µF / 25V electrolytic capacitor per bench. The DRV8825 input uses
+                  a ceramic capacitor, and long power leads can produce spikes above 45V
+                  that destroy the chip. We skip it during the workshop; the host keeps it
+                  for the section 12 challenge. Until it is fitted, follow the rule:
+                  never unplug the power leads while the system is on.
+                </p>
+              </div>
+            </section>
+
+            <section id="parts">
+              <h2><span class="manual-num">04</span>Meet the parts</h2>
+
+              <h3>4.1 The 42 stepper motor — precise “iron legs”</h3>
+              <p>
+                The 42 refers to a 42mm frame. This is not a free-spinning motor: it moves
+                one step and stops. Each electrical pulse turns the shaft exactly 1.8°, so
+                one revolution is exactly 200 steps. It has 4 wires, which are really two
+                independent coils (group A and group B). The driver energises them in turn
+                and the rotor steps around. Your first hands-on task is to find those two
+                groups with a multimeter.
+              </p>
+
+              <div class="manual-gallery">
+                <figure class="manual-figure">
+                  <img
+                    src="../../assets/img/workshops/drv8825/motor.jpg"
+                    alt="42 stepper motor with the label facing up"
+                    loading="lazy"
+                  />
+                  <figcaption>The 1.8° on the label is the step angle; one revolution is exactly 200 steps</figcaption>
+                </figure>
+                <figure class="manual-figure">
+                  <img
+                    src="../../assets/img/workshops/drv8825/motor-cable.jpg"
+                    alt="Stepper motor lead cable"
+                    loading="lazy"
+                  />
+                  <figcaption>Motor lead cable — the connector pitch matches female jumpers, so it plugs straight in</figcaption>
+                </figure>
+              </div>
+
+              <h3>4.2 The DRV8825 module — translator and amplifier</h3>
+              <p>
+                ESP32 pins output only a few milliamps and cannot drive a motor directly.
+                The DRV8825 does two jobs: it translates weak STEP/DIR signals into the
+                timing that energises the two coils (this is called microstepping), and it
+                amplifies current from the 12V supply to over 1A. It has 16 pins, but do not
+                panic: we only use 12 of them.
+              </p>
+
+              <div class="manual-gallery">
+                <figure class="manual-figure">
+                  <img
+                    src="../../assets/img/workshops/drv8825/drv8825-front.jpg"
+                    alt="DRV8825 module, front"
+                    loading="lazy"
+                  />
+                  <figcaption>Front: black chip (heatsink goes here), blue current potentiometer, ceramic capacitors</figcaption>
+                </figure>
+                <figure class="manual-figure">
+                  <img
+                    src="../../assets/img/workshops/drv8825/drv8825-back.jpg"
+                    alt="DRV8825 module, back, with clear pin labels"
+                    loading="lazy"
+                  />
+                  <figcaption>Back: the silkscreen is clear — check each pin against this board before wiring</figcaption>
+                </figure>
+              </div>
+
+              <p>Three things that confuse beginners, stated up front:</p>
+              <ol>
+                <li>
+                  <strong>There is no VDD pin.</strong> The module has an internal 3.3V
+                  regulator and powers its logic from the 12V rail, so it needs no second supply.
+                </li>
+                <li>
+                  <strong>The two GND pins are connected.</strong> Motor ground and logic
+                  ground are tied internally, so connecting either one to the ESP32 GND is
+                  enough for a common ground.
+                </li>
+                <li>
+                  <strong>RST and SLP must be pulled high.</strong> When either is low the
+                  chip resets, all outputs shut down, and <strong>no fault is reported</strong>.
+                  This is the most common reason a beginner has “perfect wiring but no
+                  movement”; section 08 checks it explicitly.
+                </li>
+              </ol>
+
+              <h3>4.3 Lolin S2 mini (ESP32-S2) — the board in charge</h3>
+              <p>
+                It is a thumbnail-sized microcontroller board that programs over USB. Its
+                only job is to send a train of pulses on STEP and a direction level on DIR,
+                while the other six pins configure the driver. It connects to the laptop
+                with a TypeC data cable.
+              </p>
+
+              <div class="manual-gallery">
+                <figure class="manual-figure">
+                  <img
+                    src="../../assets/img/workshops/drv8825/s2mini-front.jpg"
+                    alt="Lolin S2 mini, front"
+                    loading="lazy"
+                  />
+                  <figcaption>Front: TypeC port, ESP32-S2 chip, RESET / BOOT buttons</figcaption>
+                </figure>
+                <figure class="manual-figure">
+                  <img
+                    src="../../assets/img/workshops/drv8825/s2mini-back.jpg"
+                    alt="Lolin S2 mini, back, with GPIO labels"
+                    loading="lazy"
+                  />
+                  <figcaption>Back: GPIO labels are clear — check this side before plugging wires</figcaption>
+                </figure>
+              </div>
+
+              <h3>4.4 The power trio — supply, DC adapter, splice connectors</h3>
+              <p>
+                The 12V supply is the power source and has a round DC output. The female DC
+                adapter plugs in and exposes red (+12V) and black (GND) leads. Those are bare
+                wires and cannot go straight onto header pins. That is what the two 2-way
+                splice connectors are for: clamp a bare lead and a jumper together and the
+                wire becomes a pluggable Dupont connection. The second connector is a spare.
+              </p>
+
+              <h3>4.5 Multimeter and precision screwdriver — the second star</h3>
+              <p>
+                The multimeter does three jobs today: resistance/continuity to find motor
+                coils, DC voltage to confirm 12V and Vref, and acting as your eyes during
+                troubleshooting. The precision screwdriver does one job: turning the tiny
+                current potentiometer on the DRV8825. That one turn decides whether the motor
+                runs smoothly and whether the chip overheats.
+              </p>
+            </section>
+
+            <section id="heatsink">
+              <h2><span class="manual-num">05</span>Build 0: fit the heatsink</h2>
+              <p>
+                The DRV8825 chip produces significant heat and a bare board can only sustain
+                about 1A per phase long-term. The included heatsink must go on
+                <strong>before power-up</strong>. Fit it afterwards and the chip is already hot.
+              </p>
+
+              <figure class="manual-figure manual-figure--narrow">
+                <img
+                  src="../../assets/img/workshops/drv8825/drv8825-heatsink.jpg"
+                  alt="DRV8825 module with the heatsink fitted"
+                  loading="lazy"
+                />
+                <figcaption>The heatsink sits directly on the black chip, with every pin row clear on the outside.</figcaption>
+              </figure>
+
+              <ol>
+                <li>Place the heatsink directly on the <strong>black chip</strong>, adhesive side down.</li>
+                <li>
+                  Check that it <strong>touches no other component or pin</strong>. The
+                  aluminium heatsink is conductive — contact means a short circuit.
+                </li>
+                <li>Put the peeled backing film in the bin, not on the bench.</li>
+              </ol>
+            </section>
+
+            <section id="coils">
+              <h2><span class="manual-num">06</span>Build 1: find the two coils</h2>
+              <p>
+                The 4 motor wires form two pairs: one for group A, one for group B.
+                <strong>Never guess by colour</strong> — manufacturers use completely
+                different colour maps. Measure it with a multimeter; it takes three minutes.
+              </p>
+
+              <figure class="manual-figure">
+                <img
+                  src="../../assets/img/workshops/drv8825/motor-wiring.jpg"
+                  alt="Motor leads routed through splice connectors"
+                  loading="lazy"
+                />
+                <figcaption>Motor leads routed through splice connectors — measuring on the other side of the connector works too.</figcaption>
+              </figure>
+
+              <ol>
+                <li>
+                  Set the multimeter to <strong>resistance (Ω) or continuity</strong>. Touch
+                  the probes to any two motor wires and note the reading.
+                </li>
+                <li>
+                  Try other pairs until you find <strong>two conducting pairs</strong>: roughly
+                  1Ω to a few tens of ohms (continuity beeps). A typical 42 motor reads about
+                  1–10Ω.
+                </li>
+                <li>
+                  Pairs that read open (OL or a very high value) belong to different groups.
+                  <strong>Never</strong> connect them to the same output group.
+                </li>
+                <li>
+                  Label the two conducting pairs (A and B) and connect them to the DRV8825
+                  A1/A2 and B1/B2 outputs.
+                </li>
+              </ol>
+
+              <div class="manual-callout">
+                <strong>Checkpoint</strong>
+                <p>
+                  Each pair conducts, and the two pairs do not conduct to each other. Do this
+                  and you have eliminated the biggest cause of “the motor buzzes but will not turn”.
+                </p>
+              </div>
+            </section>
+
+            <section id="wiring">
+              <h2><span class="manual-num">07</span>Build 2: complete the wiring</h2>
+              <p>
+                Look at the whole system first, then work through 7.1–7.5.
+                <strong>Everything is unpowered</strong> — do not plug in the 12V supply yet.
+              </p>
+
+              <figure class="manual-figure">
+                <img
+                  src="../../assets/img/workshops/drv8825/full-wiring.jpg"
+                  alt="Full wiring photo: ESP32-S2, DRV8825, stepper motor and DC adapter power leads"
+                  loading="lazy"
+                />
+                <figcaption>Full build: ESP32-S2 → 8 control wires → DRV8825 → motor. Top left is the DC adapter and splice-connector power lead.</figcaption>
+              </figure>
+
+              <h3>7.1 Motor → module (4 wires)</h3>
+              <p>
+                <strong>Group A</strong> from section 06 goes to <strong>A1 and A2</strong>;
+                <strong>group B</strong> goes to <strong>B1 and B2</strong>. Within a group,
+                swapping A1/A2 only changes direction, not whether it turns.
+              </p>
+              <p>The 42 motor's white connector matches female jumpers and plugs straight in; no splice connector needed.</p>
+
+              <h3>7.2 Power → module (2 wires)</h3>
+              <ol>
+                <li>Plug the DC adapter into the 12V supply output (align the key and push fully in).</li>
+                <li>
+                  Clamp the adapter's red and black leads to two jumpers in the
+                  <strong>splice connectors</strong>: red to red, black to black.
+                </li>
+                <li>
+                  Plug the red jumper (male end) into <strong>VMOT</strong> and the black
+                  jumper into the <strong>GND next to it</strong> (the power-side ground).
+                </li>
+              </ol>
+
+              <figure class="manual-figure">
+                <img
+                  src="../../assets/img/workshops/drv8825/dc-adapter-wiring.jpg"
+                  alt="DC adapter terminals with red and black jumper wires"
+                  loading="lazy"
+                />
+                <figcaption>DC adapter terminals with red (+12V) and black (GND) jumpers — check the + and − markings before clamping.</figcaption>
+              </figure>
+
+              <div class="manual-callout manual-callout--warm">
+                <strong>100µF capacitor: not fitted today</strong>
+                <p>
+                  It absorbs voltage spikes on the supply lead and protects the chip
+                  (long leg positive to VMOT, short leg to GND; reverse polarity makes it
+                  bulge and burst). To keep wiring simple for beginners we skip it and leave
+                  it for the section 12 challenge. Until it is fitted, follow one rule:
+                  <strong>never unplug the VMOT power lead while powered</strong>.
+                </p>
+              </div>
+
+              <h3>7.3 ESP32 → module (8 control wires + common ground)</h3>
+              <p>
+                Wire each connection using the pin table in section 13: GPIO2→DIR,
+                GPIO3→STEP, GPIO4→SLP, GPIO5→RST, GPIO6→M2, GPIO7→M1, GPIO8→M0,
+                GPIO9→EN. Then run one black jumper from ESP32 GND to the GND on the right
+                side of the module. <strong>This is the common ground; without it nothing
+                works</strong>, because voltage is relative and both boards need the same reference.
+              </p>
+
+              <h3>7.4 Special attention: SLP and RST</h3>
+              <p>
+                The DRV8825 SLP (sleep) and RST (reset) pins are both
+                <strong>active low</strong>. If either is pulled low or left floating, the
+                chip shuts down completely: no motion, no torque, and
+                <strong>no fault</strong>. FLT stays high and a multimeter shows nothing
+                wrong. This is the number one reason for “wiring is perfect but the motor
+                will not move”. Our program pulls both high at startup, but the physical
+                connection must be solid.
+              </p>
+
+              <h3>7.5 Unpowered self-check</h3>
+              <ul class="manual-checklist">
+                <li>
+                  <label class="manual-check">
+                    <input type="checkbox" id="wiring-1" data-check />
+                    <span>VMOT red, GND black, not reversed; capacitor not fitted (advanced task).</span>
+                  </label>
+                </li>
+                <li>
+                  <label class="manual-check">
+                    <input type="checkbox" id="wiring-2" data-check />
+                    <span>The two motor coils are not mixed across groups.</span>
+                  </label>
+                </li>
+                <li>
+                  <label class="manual-check">
+                    <input type="checkbox" id="wiring-3" data-check />
+                    <span>Read all 8 control wires aloud against the table: “GPIO x → which module pin”.</span>
+                  </label>
+                </li>
+                <li>
+                  <label class="manual-check">
+                    <input type="checkbox" id="wiring-4" data-check />
+                    <span>There is a GND common-ground wire between ESP32 and the module.</span>
+                  </label>
+                </li>
+                <li>
+                  <label class="manual-check">
+                    <input type="checkbox" id="wiring-5" data-check />
+                    <span>Heatsink is fitted and touches no other pin.</span>
+                  </label>
+                </li>
+                <li>
+                  <label class="manual-check">
+                    <input type="checkbox" id="wiring-6" data-check />
+                    <span>No loose metal tools or clipped leads on the bench.</span>
+                  </label>
+                </li>
+              </ul>
+              <p>All checked → raise your hand for the host to review → only then go to section 08.</p>
+            </section>
+
+            <section id="power">
+              <h2><span class="manual-num">08</span>Power-up: three checks and current setting</h2>
+
+              <h3>8.1 Three checks before power</h3>
+              <ol>
+                <li>
+                  <strong>Check the supply:</strong> plug the 12V supply into mains, but do
+                  not touch any jumper yet. Set the multimeter to DC volts (20V range) and
+                  measure the DC adapter leads; expect about 12V.
+                </li>
+                <li>
+                  <strong>Check common ground:</strong> continuity mode, one probe on ESP32
+                  GND and one on module GND; it should beep.
+                </li>
+                <li><strong>Check the coils:</strong> confirm the group labels from section 06.</li>
+              </ol>
+              <p>
+                After all three pass, connect 12V to VMOT/GND. <strong>Do not connect the
+                ESP32 TypeC yet.</strong> This is the “safe first power-up”: only the driver
+                and supply are live, the smallest possible scope.
+              </p>
+
+              <h3>8.2 First power-up checks</h3>
+              <ul>
+                <li>DC 20V range: red probe on VMOT, black on GND; expect about 12V.</li>
+                <li>Move the red probe to FLT on the right side of the module, black stays: expect close to 3.3V (high = no fault, normal).</li>
+                <li>Touch the heatsink with the back of your hand: slightly warm is normal (the chip draws current even when idle). If it is hot, cut power and raise a hand.</li>
+              </ul>
+
+              <figure class="manual-figure">
+                <img
+                  src="../../assets/img/workshops/drv8825/powered-on.jpg"
+                  alt="Powered system with the TypeC cable connected"
+                  loading="lazy"
+                />
+                <figcaption>System state with 12V and the TypeC data cable connected.</figcaption>
+              </figure>
+
+              <h3>8.3 Set the current: adjust Vref (the most important step)</h3>
+              <p>
+                The DRV8825 is a constant-current driver: it ignores supply voltage and holds
+                coil current at the set value. That value comes from the small potentiometer,
+                and <strong>the factory position is completely random</strong>. Some boards
+                ship at 0V (motor does nothing), some near full scale (chip runs hot). Every
+                new board must be calibrated.
+              </p>
+              <p>Work in pairs for this step:</p>
+              <ul>
+                <li>
+                  <strong>Measurer:</strong> clip the black probe to any GND — module GND,
+                  ESP32 GND, even the black (−) lead from the DC adapter; they are all the
+                  same node. Clip it and do not touch it again. Then hold the red probe firmly
+                  on the <strong>edge of the metal potentiometer cap</strong> (leave the centre
+                  slot for the screwdriver) and read the meter aloud.
+                </li>
+                <li>
+                  <strong>Operator:</strong> hold the precision screwdriver in both hands, engage
+                  the centre slot, and turn <strong>about 1/16 of a turn at a time</strong>.
+                  Stop the moment the measurer says stop, wait for a stable reading, then move again.
+                </li>
+                <li>
+                  <strong>Discipline:</strong> a probe slipping onto a nearby pin can short
+                  the board. Slow is fine, rushing is not.
+                </li>
+              </ul>
+
+              <ol>
+                <li>
+                  Set the multimeter to <strong>DC volts</strong> (2V or 20V manual range).
+                  Clip the black probe to any GND and leave it for the whole calibration.
+                </li>
+                <li>
+                  Touch the red probe to the <strong>metal cap of the potentiometer</strong>.
+                  It is connected to the wiper and is the Vref test point.
+                </li>
+                <li>
+                  With power on, the operator turns a tiny amount at a time while the measurer
+                  waits for a stable reading. Aim for the target (start at 0.5V for teaching;
+                  for a 1.5A motor, 0.75V for real use).
+                </li>
+                <li>
+                  Write the final reading on a label and stick it to the board. That is the
+                  board's ID; recalibrate whenever you change motor or board.
+                </li>
+              </ol>
+
+              <div class="manual-callout">
+                <strong>It is normal to be imprecise</strong>
+                <p>
+                  The potentiometer has a very short travel, so a tiny movement makes the
+                  reading jump. Keep the black probe clipped, touch only the cap edge with the
+                  red probe, use a manual range, and wait a second or two after each nudge.
+                  Do not chase the third decimal — you cannot feel the difference between
+                  0.5V and 0.55V.
+                </p>
+              </div>
+
+              <div class="manual-callout manual-callout--warm">
+                <strong>While measuring Vref</strong>
+                <p>
+                  The motor can stay disconnected (safer), but the module must have 12V on
+                  VMOT — its internal regulator and reference are powered from it. With power
+                  off you will always read 0.
+                </p>
+              </div>
+
+              <p>
+                Reference values: 0.5V ≈ 1.0A for teaching; a common 42 motor is about
+                0.6V ≈ 1.2A; a 1.5A motor is rated at 0.75V. Always start at 70% of the rated
+                current and confirm by running for 10 seconds and checking temperature.
+              </p>
+            </section>
+
+            <section id="flash">
+              <h2><span class="manual-num">09</span>Flash the first program</h2>
+
+              <h3>9.1 Connect the ESP32</h3>
+              <p>
+                Connect the Lolin S2 mini to the laptop with the TypeC data cable. A new
+                serial device should appear (COMx on Windows). If nothing happens, you
+                probably have a charge-only cable or a missing serial driver — ask the host.
+              </p>
+
+              <h3>9.2 Prepare Arduino IDE</h3>
+              <ol>
+                <li>Download and install <strong>Arduino IDE 2</strong> from arduino.cc.</li>
+                <li>
+                  File → Preferences → “Additional boards manager URLs”:
+                  <code>https://espressif.github.io/arduino-esp32/package_esp32_index.json</code>
+                </li>
+                <li>
+                  Tools → Board → Boards Manager, search <code>esp32</code>, install
+                  <strong>esp32 by Espressif Systems</strong> (several hundred MB; let the bar finish).
+                </li>
+                <li>
+                  Tools → Board → esp32 → <strong>LOLIN S2 mini</strong>; Tools → Port → the new COM port.
+                </li>
+              </ol>
+
+              <h3>9.3 First program: one turn forward, one turn back</h3>
+              <p>
+                Create a new sketch, replace the whole file with the code below, and
+                <strong>save it in a brand-new folder</strong> (for example
+                <code>MyFirstStepper</code>). Arduino merges .ino files in a same-named folder,
+                so a fresh folder per exercise is a good habit.
+              </p>
+
+              <pre class="manual-code"><code>/* First stepper program: full step, one turn forward, one back
+   Core idea: every rising edge on STEP moves the motor one step.
+   Wiring: DIR=2 STEP=3 SLP=4 RST=5 M2=6 M1=7 M0=8 EN=9 */
+
+#define DIR_PIN   2   // Direction: high = CW, low = CCW
+#define STEP_PIN  3   // Step: one rising edge = one step; pulse rate sets speed
+#define SLEEP_PIN 4   // Sleep: must be high; low = outputs off (and no fault!)
+#define RESET_PIN 5   // Reset: must be high; low = outputs off (and no fault!)
+#define M2_PIN    6   // Microstep select: all low = full step (200 steps/rev),
+#define M1_PIN    7   // the high/low combination sets the microstep ratio,
+#define M0_PIN    8   // used by the smoother version in 9.4
+#define EN_PIN    9   // Enable: low = outputs on, high = outputs off (no holding torque)
+
+const int stepsPerRevolution = 200;   // Full step: 200 steps per revolution (1.8° × 200 = 360°)
+
+void setup() {
+  Serial.begin(115200);            // Open serial so progress is visible in the monitor
+
+  // All 8 pins as outputs
+  pinMode(STEP_PIN,  OUTPUT);
+  pinMode(DIR_PIN,   OUTPUT);
+  pinMode(SLEEP_PIN, OUTPUT);
+  pinMode(RESET_PIN, OUTPUT);
+  pinMode(M2_PIN,    OUTPUT);
+  pinMode(M1_PIN,    OUTPUT);
+  pinMode(M0_PIN,    OUTPUT);
+  pinMode(EN_PIN,    OUTPUT);
+
+  // Turn on the driver's three switches: get these wrong and the motor sits still with no error
+  digitalWrite(SLEEP_PIN, HIGH);   // SLP low = sleep, outputs off
+  digitalWrite(RESET_PIN, HIGH);   // RST low = reset, outputs off
+  digitalWrite(EN_PIN,    LOW);    // EN low = outputs enabled
+
+  // M0/M1/M2 all low = full-step mode (200 steps per revolution)
+  digitalWrite(M0_PIN, LOW);
+  digitalWrite(M1_PIN, LOW);
+  digitalWrite(M2_PIN, LOW);
+
+  digitalWrite(STEP_PIN, LOW);     // Keep STEP low to start
+}
+
+void loop() {
+  digitalWrite(DIR_PIN, HIGH);       // 1. Direction = clockwise
+  Serial.println("Spin CW...");
+  // 2. Send 200 pulses = 200 steps = exactly one revolution
+  for (int i = 0; i &lt; stepsPerRevolution; i++) {
+    digitalWrite(STEP_PIN, HIGH);    // Rising edge: the rotor takes a step
+    delayMicroseconds(2000);         // Hold for 2ms (too short and the driver may miss it)
+    digitalWrite(STEP_PIN, LOW);     // Pull low, ready for the next pulse
+    delayMicroseconds(2000);         // Another 2ms: 4ms per step total
+  }
+  delay(1000);                       // 3. Pause 1s (outputs still on: holding torque)
+
+  digitalWrite(DIR_PIN, LOW);        // Change direction = counter-clockwise, one more turn
+  Serial.println("Spin CCW...");
+  for (int i = 0; i &lt; stepsPerRevolution; i++) {
+    digitalWrite(STEP_PIN, HIGH);
+    delayMicroseconds(2000);
+    digitalWrite(STEP_PIN, LOW);
+    delayMicroseconds(2000);
+  }
+  delay(1000);
+}</code></pre>
+
+              <div class="manual-callout">
+                <strong>The code really does three things</strong>
+                <p>
+                  1. One pulse = one step: the rotor moves on the LOW-to-HIGH edge of STEP.
+                  2. DIR sets direction: high = CW, low = CCW, changed only when reversing.
+                  3. SLP / RST / EN are switches: SLP and RST must be high (low = sleep/reset,
+                  outputs off with no error), EN must be low to enable outputs. M0/M1/M2
+                  select microstepping; all low = full step.
+                </p>
+              </div>
+
+              <p>
+                Speed is set by <code>delayMicroseconds(2000)</code>: one pulse period is
+                2000 + 2000 = 4000µs, so 200 steps × 4ms ≈ 0.8s per revolution (about 75 rpm).
+                Lower the number to go faster, but too fast and the motor cannot keep up and
+                “loses steps”, which looks like vibration.
+              </p>
+
+              <ol>
+                <li>Click the <strong>→ Upload</strong> button at the top left. The first compile is slow.</li>
+                <li>
+                  If you get “port not found” or upload fails: hold the <strong>BOOT</strong>
+                  button, click upload, and release once progress starts.
+                </li>
+                <li>
+                  After upload, open the <strong>Serial Monitor</strong> (magnifier icon),
+                  set <strong>115200</strong>, and press the board's RST button to restart the program.
+                </li>
+              </ol>
+
+              <div class="manual-callout manual-callout--warm">
+                <strong>The “tak-tak” noise is not a fault</strong>
+                <p>
+                  This program is deliberately simple so you can see the essence of
+                  “pulse → step”, but it has an obvious side effect: it is noisy and shaky.
+                  In full-step mode every step is a sharp mechanical kick, and 75 rpm strings
+                  those kicks into an audible rattle that can even excite resonance. It is not
+                  a wiring error. The next version fixes it.
+                </p>
+              </div>
+
+              <h3>9.4 Try the “smooth” version</h3>
+              <p>The improved program combines three changes, <strong>with no wiring changes at all</strong>:</p>
+              <ol>
+                <li>
+                  <strong>Higher microstepping:</strong> pull M2 high for 1/16 step, turning
+                  200 steps per revolution into 3200. One big kick becomes 16 small ones and
+                  the rattle turns into a faint hiss. The resulting ~47 rpm also avoids the
+                  10–20 rpm mid-band resonance.
+                </li>
+                <li><strong>Ramps:</strong> accelerate over 200 steps and decelerate over 200 steps, removing the jolt at start and reversal.</li>
+                <li><strong>Idle current cut:</strong> raise EN while paused to turn outputs off, resting both motor and chip (cost: no holding torque while paused).</li>
+              </ol>
+              <p>
+                Create a new sketch folder (for example <code>MySmoothStepper</code>) and
+                replace the whole file with this code:
+              </p>
+
+              <pre class="manual-code"><code>/* Improved version: smooth stepping — high microstep + ramps + idle current cut
+   Wiring is identical to the first program. Not one wire changes!
+   Three changes:
+   1. M2 = HIGH: 1/16 microstep, 200 steps per revolution becomes 3200
+   2. 200-step acceleration and deceleration ramps
+   3. Raise EN while paused to turn outputs off, resting motor and chip */
+
+// ---------- Pin definitions (identical to the first program) ----------
+#define DIR_PIN   2   // Direction
+#define STEP_PIN  3   // Step: one rising edge = one step
+#define SLEEP_PIN 4   // Sleep, must be high
+#define RESET_PIN 5   // Reset, must be high
+#define M2_PIN    6   // 
+#define M1_PIN    7   // Microstep select: M2=1, M1=0, M0=0 → 1/16
+#define M0_PIN    8   // 
+#define EN_PIN    9   // Enable: low = outputs on, high = outputs off
+
+// ---------- Motion parameters (change these three lines to tune speed / smoothness) ----------
+#define STEPS_PER_REV 3200  // Steps per revolution: 1/16 = 200 × 16. Change this with microstepping!
+#define HALF_US_MIN   200   // Half-period at full speed (µs): 200+200 = 400µs/step ≈ 47rpm, avoids resonance
+#define RAMP_STEPS    200   // Steps spent accelerating and decelerating
+
+// Emit one STEP pulse: us is the high time and the low time
+void stepPulse(int us) {
+  digitalWrite(STEP_PIN, HIGH);  // Rising edge = one step
+  delayMicroseconds(us);
+  digitalWrite(STEP_PIN, LOW);   // Pull low, ready for the next pulse
+  delayMicroseconds(us);
+}
+
+// Move n steps, cw sets direction (true = clockwise), with built-in ramps
+void moveSteps(int n, bool cw) {
+  digitalWrite(DIR_PIN, cw ? HIGH : LOW);  // Set direction first
+  delayMicroseconds(20);                   // Wait 20µs for the direction signal to settle
+  for (int i = 0; i &lt; n; i++) {
+    int us = HALF_US_MIN;                  // Middle section: full speed
+    int edge = min(i, n - 1 - i);          // Distance to start or end, whichever is closer
+    if (edge &lt; RAMP_STEPS) {               // Inside a ramp: scale the speed
+      int startUs = HALF_US_MIN * 4;       // Ramp starts 4× slower than full speed
+      us = startUs - (long)(startUs - HALF_US_MIN) * edge / RAMP_STEPS;
+    }
+    stepPulse(us);
+  }
+}
+
+void setup() {
+  Serial.begin(115200);
+  delay(300);
+
+  // All 8 pins as outputs (same as the first program)
+  pinMode(STEP_PIN, OUTPUT);
+  pinMode(DIR_PIN, OUTPUT);
+  pinMode(SLEEP_PIN, OUTPUT);
+  pinMode(RESET_PIN, OUTPUT);
+  pinMode(M2_PIN, OUTPUT);
+  pinMode(M1_PIN, OUTPUT);
+  pinMode(M0_PIN, OUTPUT);
+  pinMode(EN_PIN, OUTPUT);
+
+  digitalWrite(STEP_PIN, LOW);
+  digitalWrite(SLEEP_PIN, HIGH);   // Wake the driver
+  digitalWrite(RESET_PIN, HIGH);   // Release reset
+  digitalWrite(EN_PIN,    LOW);    // Enable outputs
+
+  digitalWrite(M2_PIN, HIGH);      // * The only setup difference from the first program:
+  digitalWrite(M1_PIN, LOW);       //   M2=1, M1=0, M0=0 → 1/16 microstep
+  digitalWrite(M0_PIN, LOW);
+}
+
+// Rest while paused: the chip stops chopping and heating, but the motor loses holding torque
+void idle(unsigned long ms) {
+  digitalWrite(EN_PIN, HIGH);    // Outputs off, coils unpowered
+  delay(ms);
+  digitalWrite(EN_PIN, LOW);     // Outputs back on
+  delay(5);                      // Wait 5ms for current to rebuild
+}
+
+void loop() {
+  Serial.println("CW");
+  moveSteps(STEPS_PER_REV, true);   // One clockwise turn (3200 steps, with ramps)
+  idle(800);                        // Pause 0.8s (outputs off)
+  Serial.println("CCW");
+  moveSteps(STEPS_PER_REV, false);  // One counter-clockwise turn
+  idle(800);
+}</code></pre>
+
+              <p>Upload, open the serial monitor at 115200, and <strong>compare by ear</strong>:</p>
+              <ul>
+                <li>Listen at the reversal: the first program jolts; what does this one do?</li>
+                <li>After one minute, feel the heatsink. How does it compare with the first program after the same time?</li>
+                <li>Think: why is the speed not 16× faster when steps go from 200 to 3200?</li>
+              </ul>
+              <p>
+                Because real speed comes from the pulse interval (<code>HALF_US_MIN</code>):
+                200 + 200 = 400µs per step, so 3200 steps take about 1.3s per revolution
+                (about 47 rpm). If you change microstepping but forget to multiply the step
+                count by 16, 200 pulses only move 1/16 of a turn and it looks like “it stopped
+                working again” — the classic microstepping trap.
+              </p>
+            </section>
+
+            <section id="checkpoints">
+              <h2><span class="manual-num">10</span>Expected behaviour and checkpoints</h2>
+              <ul>
+                <li>The motor turns steadily forward for about 0.8s (one revolution), pauses 1s, then reverses; repeat.</li>
+                <li>A regular “tak-tak” step sound is normal in full-step mode, not a fault.</li>
+                <li>
+                  After trying 9.4: the sound becomes a faint continuous hiss and the start/reversal
+                  jolts disappear. That difference is microstepping plus ramps.
+                </li>
+                <li>The serial monitor repeats <code>Spin CW... / Spin CCW...</code>.</li>
+                <li>Pinching the shaft gently feels a clear “locked” force (holding torque), which disappears when power is removed.</li>
+                <li>After two minutes the heatsink is only warm and you can keep your hand on it.</li>
+              </ul>
+              <p>All of the above? You have built a complete motion control system on your own.</p>
+
+              <h3>Two effects worth remembering</h3>
+              <p>
+                <strong>Why is the chip warm even when idle?</strong>
+                The DRV8825 is a constant-current driver. To hold the rotor it keeps energising
+                the coils and chopping at high frequency, so heat depends mostly on the current
+                setting, not on whether the motor is turning.
+              </p>
+              <p>
+                <strong>Why does the shaft feel notchy when turned by hand?</strong>
+                With power off it is cogging torque (permanent magnets attracted to stator teeth);
+                with power on it is holding torque. Both are inherent, not faults.
+              </p>
+            </section>
+
+            <section id="troubleshooting">
+              <h2><span class="manual-num">11</span>Troubleshooting</h2>
+              <p>If the motor will not turn, work down the table. The first two rows cover 80% of beginner failures.</p>
+
+              <table class="manual-table">
+                <thead>
+                  <tr>
+                    <th>Symptom</th>
+                    <th>Most likely cause</th>
+                    <th>What to do</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Nothing at all, no sound, no torque</td>
+                    <td>SLP/RST pulled low; EN not low; no VMOT; Vref at 0</td>
+                    <td>Measure GPIO4/5/9: expect 3.3/3.3/0V; measure VMOT: 12V; measure Vref</td>
+                  </tr>
+                  <tr>
+                    <td>FLT is high but the motor does not move</td>
+                    <td>RST = 0 (reset disables all outputs but is not a fault, so FLT stays high)</td>
+                    <td>Measure RST to GND: is it 3.3V? Check whether GPIO5 is plugged into the wrong pin</td>
+                  </tr>
+                  <tr>
+                    <td>Buzzing and shaking but not turning</td>
+                    <td>Coils mixed across phases; or Vref too low for enough torque</td>
+                    <td>Regroup per section 06; raise Vref a little</td>
+                  </tr>
+                  <tr>
+                    <td>Turns a little then stops, intermittent, chip hot</td>
+                    <td>Vref too high causing thermal shutdown; no heatsink; missing 100µF; supply sagging under load</td>
+                    <td>Lower Vref; confirm heatsink; add capacitor; measure VMOT while running and check it stays above 10V</td>
+                  </tr>
+                  <tr>
+                    <td>It turns but feels slightly rough</td>
+                    <td>1/2-step feel with no acceleration; cogging is inherent</td>
+                    <td>Switch to 1/16 (M2=1, steps 3200) and add ramps; the rest is physical limit</td>
+                  </tr>
+                  <tr>
+                    <td>Potentiometer reading jumps with the slightest touch</td>
+                    <td>Single-turn pot with short travel; the target is a small part of the range</td>
+                    <td>Clip the probe, use a manual range, nudge in tiny amounts</td>
+                  </tr>
+                  <tr>
+                    <td>Upload fails / port not found</td>
+                    <td>ESP32 core not installed; charge-only cable; port busy</td>
+                    <td>Install driver and core; swap cable; hold BOOT while uploading</td>
+                  </tr>
+                  <tr>
+                    <td>Changed the code but nothing changed</td>
+                    <td>An old sketch buffer in Arduino IDE overwrote the new file</td>
+                    <td>Close the old sketch, reopen the new folder; one folder per exercise</td>
+                  </tr>
+                  <tr>
+                    <td>Different behaviour after changing motors</td>
+                    <td>Motors have different rated currents, so Vref must be recalibrated; very low-resistance motors do not suit the DRV8825</td>
+                    <td>Recalculate Vref from the new label; measure coil resistance first; for 1–3Ω high-current motors use a TB6600-class driver</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+
+            <section id="challenges">
+              <h2><span class="manual-num">12</span>Stretch challenges</h2>
+              <p>After the basic build, try these in order. Each one produces a difference you can feel or hear.</p>
+              <ul>
+                <li>
+                  <strong>Finer · 1/32 microstep:</strong> on the 9.4 smooth version, also pull M0
+                  high (M2=1, M1=0, M0=1 = 1/32) and change <code>STEPS_PER_REV</code> to 6400.
+                  Does it get smoother still? If you forget the step count, 3200 pulses only
+                  move half a turn and it looks slower.
+                </li>
+                <li>
+                  <strong>Protect · add the 100µF capacitor:</strong> with power off, fit the long
+                  leg (positive) to VMOT and the short leg to the adjacent GND, as close to the
+                  module as possible. Rerun the program to confirm normal operation, then research
+                  why long supply leads create spikes above 45V (keywords: parasitic inductance, LC spike).
+                </li>
+                <li>
+                  <strong>Tune · change ramp parameters:</strong> on the smooth version, change
+                  <code>RAMP_STEPS</code> from 200 to 20, then 400. How does the start feel?
+                  Change <code>HALF_US_MIN</code> from 200 to 100 (about 94 rpm) and back. Which
+                  is smoother? Remember: revolution time ≈ steps × pulse interval × 2.
+                </li>
+                <li>
+                  <strong>Cool · idle current cut:</strong> change <code>800</code> inside
+                  <code>idle()</code> to <code>3000</code>, run for a while and compare chip
+                  temperature. What is the cost? (No holding torque while paused; the shaft can
+                  be turned by hand.)
+                </li>
+                <li>
+                  <strong>Engineering · use AccelStepper:</strong> use its
+                  setMaxSpeed / setAcceleration to make an S-curve and feel what a motion-planning
+                  library does for you.
+                </li>
+                <li>
+                  <strong>Perspective · look at industrial drives:</strong> production lines use
+                  integrated industrial drives such as Leadshine DM series or Moons units (32-bit
+                  DSP plus discrete power devices; current and microstepping set by DIP switches or
+                  software, with no fiddly Vref pot), with multi-axis sync over EtherCAT. The
+                  chopper current control, microstepping and STEP/DIR ideas you learned here all apply.
+                </li>
+              </ul>
+            </section>
+
+            <section id="appendix">
+              <h2><span class="manual-num">13</span>Appendix</h2>
+
+              <h3>13.1 Pin map (stick it on your kit box)</h3>
+              <table class="manual-table">
+                <thead>
+                  <tr>
+                    <th>DRV8825 pin</th>
+                    <th>To ESP32</th>
+                    <th>Function</th>
+                    <th>Notes</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>DIR</td>
+                    <td>GPIO2</td>
+                    <td>Direction</td>
+                    <td>High/low = the two directions</td>
+                  </tr>
+                  <tr>
+                    <td>STEP</td>
+                    <td>GPIO3</td>
+                    <td>Step pulse</td>
+                    <td>One step per rising edge</td>
+                  </tr>
+                  <tr>
+                    <td>SLP</td>
+                    <td>GPIO4</td>
+                    <td>Sleep control</td>
+                    <td><strong>Must be high</strong>; low = all outputs off</td>
+                  </tr>
+                  <tr>
+                    <td>RST</td>
+                    <td>GPIO5</td>
+                    <td>Reset control</td>
+                    <td><strong>Must be high</strong>; low = all outputs off, no fault</td>
+                  </tr>
+                  <tr>
+                    <td>M2 / M1 / M0</td>
+                    <td>GPIO6 / 7 / 8</td>
+                    <td>Microstep select</td>
+                    <td>All low = full step; M2 high = 1/16</td>
+                  </tr>
+                  <tr>
+                    <td>EN</td>
+                    <td>GPIO9</td>
+                    <td>Output enable</td>
+                    <td>Low = running; high = outputs off, no holding torque</td>
+                  </tr>
+                  <tr>
+                    <td>VMOT / GND</td>
+                    <td>12V supply ±</td>
+                    <td>Power input</td>
+                    <td>Add a local 100µF capacitor in the advanced stage</td>
+                  </tr>
+                  <tr>
+                    <td>GND (the other one)</td>
+                    <td>ESP32 GND</td>
+                    <td>Common ground</td>
+                    <td>Without it, no signal means anything</td>
+                  </tr>
+                  <tr>
+                    <td>A1/A2, B1/B2</td>
+                    <td>Motor coils</td>
+                    <td>Coil outputs</td>
+                    <td>Swappable within a group (direction only)</td>
+                  </tr>
+                  <tr>
+                    <td>FLT</td>
+                    <td>Not connected</td>
+                    <td>Fault indicator</td>
+                    <td>High = OK; low = overcurrent / overtemp / undervoltage</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <h3>13.2 Vref quick reference</h3>
+              <p>Standard DRV8825 modules: current limit = Vref × 2.</p>
+              <table class="manual-table">
+                <thead>
+                  <tr>
+                    <th>Vref</th>
+                    <th>Current limit</th>
+                    <th>Suitable motor</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>0.4 V</td>
+                    <td>0.8 A</td>
+                    <td>Small frame / low-current motors</td>
+                  </tr>
+                  <tr>
+                    <td>0.5 V</td>
+                    <td>1.0 A</td>
+                    <td>Teaching starting value</td>
+                  </tr>
+                  <tr>
+                    <td>0.6 V</td>
+                    <td>1.2 A</td>
+                    <td>Common 42 motors (about 80%)</td>
+                  </tr>
+                  <tr>
+                    <td>0.75 V</td>
+                    <td>1.5 A</td>
+                    <td>Full rating for a 1.5A motor</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p>
+                A bare DRV8825 sustains about 1A per phase long-term; with a heatsink, about 1.5A.
+                The 2.5A rating is a peak under ideal cooling.
+              </p>
+
+              <h3>13.3 Glossary</h3>
+              <ul>
+                <li>
+                  <strong>Full step / microstep:</strong> splitting one 1.8° step into 2–32 parts.
+                  Finer means smoother and quieter, but the pulse count for a given speed multiplies.
+                </li>
+                <li><strong>Holding torque:</strong> the maximum external force the motor resists when energised; the most important stepper rating.</li>
+                <li>
+                  <strong>Cogging torque:</strong> the notchy feel when turning an unpowered shaft,
+                  caused by magnets and stator teeth. Inherent, and cannot be removed by the driver.
+                </li>
+                <li>
+                  <strong>Chopper current control:</strong> the driver switches at high frequency to
+                  hold coil current at the set value regardless of supply voltage — which is how 12V
+                  can drive a coil rated at only a few volts.
+                </li>
+                <li>
+                  <strong>TSD / UVLO / OCP:</strong> thermal shutdown (~165°C) / undervoltage lockout
+                  (VMOT below ~8.2V) / overcurrent protection. All disable the output; only UVLO and
+                  OCP pull FLT low.
+                </li>
+                <li><strong>Common ground:</strong> two boards must share one ground reference before any high/low level means anything.</li>
+              </ul>
+            </section>
+
+            <section id="host-notes">
+              <h2><span class="manual-num">14</span>Host notes</h2>
+
+              <h3>Before the session</h3>
+              <ul class="manual-checklist">
+                <li>
+                  <label class="manual-check">
+                    <input type="checkbox" id="host-1" data-check />
+                    <span>Add one 100µF/25V capacitor per bench, not wired today; host keeps and issues them. Keep spare 2512 packages.</span>
+                  </label>
+                </li>
+                <li>
+                  <label class="manual-check">
+                    <input type="checkbox" id="host-2" data-check />
+                    <span>At least 2 spare DRV8825 modules (someone always damages the pot or reverses power); 1 spare 42 motor.</span>
+                  </label>
+                </li>
+                <li>
+                  <label class="manual-check">
+                    <input type="checkbox" id="host-3" data-check />
+                    <span>Test every participant supply in series beforehand; bench strips rated above 2A.</span>
+                  </label>
+                </li>
+                <li>
+                  <label class="manual-check">
+                    <input type="checkbox" id="host-4" data-check />
+                    <span>Pre-install Arduino IDE 2 + ESP32 core on the teaching machine, or bring an offline installer — especially on slow classroom networks.</span>
+                  </label>
+                </li>
+                <li>
+                  <label class="manual-check">
+                    <input type="checkbox" id="host-5" data-check />
+                    <span>ESD straps optional; at minimum have participants touch a grounded metal bench before fitting the heatsink or module.</span>
+                  </label>
+                </li>
+                <li>
+                  <label class="manual-check">
+                    <input type="checkbox" id="host-6" data-check />
+                    <span>Print the wiring diagram at A4 and put one on each bench; far faster than squinting at a screen.</span>
+                  </label>
+                </li>
+                <li>
+                  <label class="manual-check">
+                    <input type="checkbox" id="host-7" data-check />
+                    <span>Fit the demo multimeter with clip probes so participants have both hands free for the potentiometer.</span>
+                  </label>
+                </li>
+              </ul>
+
+              <h3>Common on-site incidents</h3>
+              <ul>
+                <li>
+                  <strong>Burning smell / bulging capacitor:</strong> cut power immediately. Usually
+                  reversed supply polarity or a reversed 100µF; inspect, then replace module and capacitor.
+                </li>
+                <li><strong>Violent shaking and buzzing:</strong> 90% coils mixed across phases, 10% Vref too high. Regroup first, then adjust current.</li>
+                <li>
+                  <strong>Chip too hot to touch:</strong> power down and cool, set Vref below 0.4V and
+                  retest; confirm the heatsink. If it still overheats at low Vref, replace the board.
+                </li>
+                <li><strong>Whole group cannot find the port:</strong> classroom network prevented the ESP32 core install; use the offline package.</li>
+                <li>
+                  <strong>One board “will not move no matter what”:</strong> measure RST for 3.3V —
+                  row two of the troubleshooting table; historically the highest hit rate.
+                </li>
+              </ul>
+            </section>
+
+            <p class="manual-source">
+              Source document:
+              <a href="https://gitee.com/zaoyige/tryesp32/tree/master/workshop/drv8825-stepmotor" target="_blank" rel="noopener"
+                >gitee.com/zaoyige/tryesp32 · DRV8825 workshop ↗</a
+              >
+              <br />Reference: lastminuteengineers.com, “Interface DRV8825 Stepper Motor Driver with Arduino”; TI DRV8825 datasheet.
+            </p>
+
+            <div class="manual-end">
+              <a class="btn btn--ghost" href="index.html"
+                >Back to the library <span class="arr" aria-hidden="true">→</span></a
+              >
+              <a class="btn btn--ghost" href="../join.html"
+                >Design a workshop with us <span class="arr" aria-hidden="true">↗</span></a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <div class="footer-bottom">
+          <span>© <span data-year>2026</span> DIHUOLAB</span>
+          <span>BUILT BY MAKERS · THE FIRE BELOW IS STILL BURNING</span>
+        </div>
+      </div>
+    </footer>
+
+    <script src="../../assets/js/site.js" defer></script>
+    <script src="../../assets/js/workshops.js" defer></script>
+  </body>
+</html>

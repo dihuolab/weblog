@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Workshop Manual Template · DIHUOLAB</title>
+    <meta
+      name="description"
+      content="DIHUOLAB workshop manual template: preparation, run of show, participant tasks, troubleshooting and review."
+    />
+    <meta name="theme-color" content="#08080a" />
+    <meta name="robots" content="noindex" />
+    <link rel="icon" href="../../assets/img/favicon.png" type="image/png" />
+    <link rel="stylesheet" href="../../assets/css/style.css" />
+    <link rel="stylesheet" href="../../assets/css/workshops.css" />
+    <script>
+      document.documentElement.classList.add("js");
+    </script>
+  </head>
+
+  <body data-page="workshops" class="manual-page">
+    <a class="skip-link" href="#main">Skip to main content</a>
+
+    <header class="site-header" data-header>
+      <div class="container header-inner">
+        <a class="brand" href="../index.html" aria-label="DIHUOLAB · Home">
+          <img
+            class="brand-mark"
+            src="../../assets/img/logo-mark.png"
+            alt=""
+            width="30"
+            height="23"
+          />
+          <span class="brand-text">
+            <strong>DIHUOLAB</strong>
+            <span>MAKERSPACE</span>
+          </span>
+        </a>
+
+        <div class="header-actions">
+          <a class="lang-toggle" href="../../workshops/template.html" hreflang="zh-CN" lang="zh-CN" aria-label="Switch to Chinese">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <circle cx="12" cy="12" r="9"></circle>
+              <path d="M3 12h18M12 3c2.5 2.4 3.8 5.6 3.8 9s-1.3 6.6-3.8 9c-2.5-2.4-3.8-5.6-3.8-9S9.5 5.4 12 3Z"></path>
+            </svg>
+            <span>中文</span>
+          </a>
+          <button
+            class="menu-toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="site-nav"
+            aria-label="Open menu"
+          >
+            <span></span>
+            <span></span>
+          </button>
+
+          <nav class="site-nav" id="site-nav" aria-label="Main navigation">
+            <a href="../index.html">Home</a>
+            <a href="../about.html">About</a>
+            <a href="../projects.html">Projects</a>
+            <a href="index.html" aria-current="page">Workshops</a>
+            <a href="../news.html">Log</a>
+            <a class="nav-cta" href="../join.html">Join us <span aria-hidden="true">↗</span></a>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <main id="main" class="manual-main">
+      <div class="container">
+        <div class="manual-shell">
+          <aside class="manual-toc" data-manual-toc>
+            <span class="mono">On this page</span>
+            <nav data-toc-list aria-label="On this page"></nav>
+          </aside>
+
+          <div class="manual-content">
+            <a class="crumb" href="index.html">Workshops <span>/</span> Manual template</a>
+
+            <span class="manual-kicker">MANUAL TEMPLATE / 00</span>
+            <h1>Workshop manual template</h1>
+            <p class="manual-lead">
+              A structure you can fill in directly. Write down the goal, materials,
+              run of show, tasks and on-site problems, and it becomes a manual you can
+              open and run next time.
+            </p>
+
+            <div class="manual-callout manual-callout--warm">
+              <strong>This is a template page</strong>
+              <p>
+                Copy it to <code>en/workshops/&lt;slug&gt;.html</code>, replace the
+                title and body, then register it in
+                <code>assets/js/data-workshops.js</code>. Delete this note when done.
+              </p>
+            </div>
+
+            <div class="manual-meta">
+              <div>
+                <span>Length</span>
+                <strong>To fill in</strong>
+              </div>
+              <div>
+                <span>Group</span>
+                <strong>To fill in</strong>
+              </div>
+              <div>
+                <span>Level</span>
+                <strong>To fill in</strong>
+              </div>
+              <div>
+                <span>Updated</span>
+                <strong>2026-11-17</strong>
+              </div>
+            </div>
+
+            <div class="manual-actions">
+              <button class="manual-action" type="button" data-print>
+                Print / save as PDF
+              </button>
+              <button
+                class="manual-action"
+                type="button"
+                data-focus-toggle
+                aria-pressed="false"
+              >
+                On-site mode
+              </button>
+              <button class="manual-action" type="button" data-reset-checks>
+                Clear checks
+              </button>
+            </div>
+
+            <div class="manual-progress">
+              <span>Preparation progress</span>
+              <strong data-check-progress>0 / 0</strong>
+            </div>
+
+            <section id="overview">
+              <h2><span class="manual-num">01</span>Overview</h2>
+              <div class="manual-body-copy">
+                <p>
+                  In two or three sentences, say what problem this workshop solves and
+                  what participants take away. If you cannot say it in one sentence,
+                  the goal probably needs narrowing.
+                </p>
+
+                <h3>By the end, participants should be able to</h3>
+                <ul>
+                  <li>Finish a concrete object they can demo or take home.</li>
+                  <li>Explain the method they used and why it works.</li>
+                  <li>Know what to try next on their own.</li>
+                </ul>
+
+                <h3>Who it is for</h3>
+                <p>
+                  State prior experience, age or equipment requirements. If there are
+                  none, say “no experience needed”. If there are, be specific so nobody
+                  discovers the gap on the day.
+                </p>
+
+                <h3>Output</h3>
+                <p>
+                  Describe what “done” means: it runs, it holds weight, it works for an
+                  hour, or it is enough to be a demo prototype. The more specific the
+                  standard, the easier it is to judge on site.
+                </p>
+              </div>
+            </section>
+
+            <section id="prepare">
+              <h2><span class="manual-num">02</span>Before</h2>
+
+              <h3>Materials and equipment</h3>
+              <ul class="manual-checklist">
+                <li>
+                  <label class="manual-check">
+                    <input type="checkbox" id="tpl-material-1" data-check />
+                    <span>List materials per participant, plus 10% spare.</span>
+                  </label>
+                </li>
+                <li>
+                  <label class="manual-check">
+                    <input type="checkbox" id="tpl-material-2" data-check />
+                    <span>Check tools: batteries, bits, filament, consumables, spares.</span>
+                  </label>
+                </li>
+                <li>
+                  <label class="manual-check">
+                    <input type="checkbox" id="tpl-material-3" data-check />
+                    <span>Run the demo steps yourself, end to end.</span>
+                  </label>
+                </li>
+                <li>
+                  <label class="manual-check">
+                    <input type="checkbox" id="tpl-material-4" data-check />
+                    <span>Prepare the safety briefing and required protection.</span>
+                  </label>
+                </li>
+              </ul>
+
+              <h3>Space and people</h3>
+              <table class="manual-table">
+                <thead>
+                  <tr>
+                    <th>Item</th>
+                    <th>Requirement</th>
+                    <th>Owner</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Work surface</td>
+                    <td>At least 60 cm per person, with power within reach.</td>
+                    <td>To fill in</td>
+                  </tr>
+                  <tr>
+                    <td>Helpers</td>
+                    <td>At least one person who knows the flow per 6–8 participants.</td>
+                    <td>To fill in</td>
+                  </tr>
+                  <tr>
+                    <td>Check-in and photos</td>
+                    <td>Confirm consent and how the session is recorded.</td>
+                    <td>To fill in</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div class="manual-callout">
+                <strong>Safety boundary</strong>
+                <p>
+                  Write down which operations only the host performs, which require
+                  protection, and when to stop immediately. Do not rely on verbal
+                  reminders.
+                </p>
+              </div>
+            </section>
+
+            <section id="run">
+              <h2><span class="manual-num">03</span>Run of show</h2>
+              <p>
+                Write the timeline in minutes, not in feelings. Leave time for wrapping
+                up and switching between blocks.
+              </p>
+
+              <table class="manual-table">
+                <thead>
+                  <tr>
+                    <th>Time</th>
+                    <th>Block</th>
+                    <th>Host is doing</th>
+                    <th>Participants are doing</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>00:00</td>
+                    <td>Opening</td>
+                    <td>State the goal, output, boundaries and schedule.</td>
+                    <td>Listen, ask, confirm what they will make.</td>
+                  </tr>
+                  <tr>
+                    <td>00:15</td>
+                    <td>Demo</td>
+                    <td>Show the key steps once, including failure cases.</td>
+                    <td>Watch and note. Hands off for now.</td>
+                  </tr>
+                  <tr>
+                    <td>00:35</td>
+                    <td>Build</td>
+                    <td>Circulate. Only step in after five minutes of being stuck.</td>
+                    <td>Follow the steps. Check first before asking.</td>
+                  </tr>
+                  <tr>
+                    <td>01:45</td>
+                    <td>Checkpoint</td>
+                    <td>Stop everyone and confirm they are at the same step.</td>
+                    <td>Show current state, check each other.</td>
+                  </tr>
+                  <tr>
+                    <td>02:30</td>
+                    <td>Close</td>
+                    <td>Run demos, take photos, collect tools.</td>
+                    <td>Finish, then explain what they made.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+
+            <section id="tasks">
+              <h2><span class="manual-num">04</span>Participant tasks</h2>
+              <p>
+                Write steps participants can read on their own. One action per step,
+                with a clear finish line.
+              </p>
+
+              <div class="manual-step">
+                <span class="manual-step-num">01</span>
+                <div>
+                  <h3>Collect materials and count parts</h3>
+                  <p>Check against the list. If something is missing, raise your hand — do not substitute.</p>
+                </div>
+              </div>
+              <div class="manual-step">
+                <span class="manual-step-num">02</span>
+                <div>
+                  <h3>Build the first working minimum version</h3>
+                  <p>Make it move before making it pretty. Note the state the first time it works.</p>
+                </div>
+              </div>
+              <div class="manual-step">
+                <span class="manual-step-num">03</span>
+                <div>
+                  <h3>Make one change and explain why</h3>
+                  <p>Change one parameter or structure, watch what happens, and write down the reason.</p>
+                </div>
+              </div>
+              <div class="manual-step">
+                <span class="manual-step-num">04</span>
+                <div>
+                  <h3>Demo and answer one question</h3>
+                  <p>In one minute: what it is, how you made it, what you would change next.</p>
+                </div>
+              </div>
+            </section>
+
+            <section id="troubleshooting">
+              <h2><span class="manual-num">05</span>Troubleshooting</h2>
+              <table class="manual-table">
+                <thead>
+                  <tr>
+                    <th>Symptom</th>
+                    <th>Check first</th>
+                    <th>If it still fails</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Equipment does not work</td>
+                    <td>Power, connections, consumables, switch state.</td>
+                    <td>Swap in a spare; set the faulty unit aside.</td>
+                  </tr>
+                  <tr>
+                    <td>Pace has split badly</td>
+                    <td>Did someone skip a prerequisite step?</td>
+                    <td>Call a checkpoint; ask those ahead to help those behind.</td>
+                  </tr>
+                  <tr>
+                    <td>Not enough material</td>
+                    <td>Waste or duplicate collection?</td>
+                    <td>Pair people up, or narrow the final output.</td>
+                  </tr>
+                  <tr>
+                    <td>Someone is not building</td>
+                    <td>Confused, afraid to start, or not interested?</td>
+                    <td>Give a smaller first step, or a different role.</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div class="manual-callout manual-callout--warm">
+                <strong>Decide in advance what to cut</strong>
+                <p>
+                  When time runs short, cut presentation polish before core steps. Write
+                  the priority here so nobody has to argue about it live.
+                </p>
+              </div>
+            </section>
+
+            <section id="review">
+              <h2><span class="manual-num">06</span>Review</h2>
+              <p>Do this within 24 hours, while memory is still fresh.</p>
+
+              <ul class="manual-checklist">
+                <li>
+                  <label class="manual-check">
+                    <input type="checkbox" id="tpl-review-1" data-check />
+                    <span>Record the gap between planned and actual timeline.</span>
+                  </label>
+                </li>
+                <li>
+                  <label class="manual-check">
+                    <input type="checkbox" id="tpl-review-2" data-check />
+                    <span>Write down at least three on-site problems and how you handled them.</span>
+                  </label>
+                </li>
+                <li>
+                  <label class="manual-check">
+                    <input type="checkbox" id="tpl-review-3" data-check />
+                    <span>Keep one photo of a participant’s work and one piece of feedback.</span>
+                  </label>
+                </li>
+                <li>
+                  <label class="manual-check">
+                    <input type="checkbox" id="tpl-review-4" data-check />
+                    <span>Write the next changes back into this page, not just into chat.</span>
+                  </label>
+                </li>
+              </ul>
+
+              <h3>Three questions to leave with</h3>
+              <ol>
+                <li>Where did people get stuck most often, and why?</li>
+                <li>Which preparation was wasted, and which was not enough?</li>
+                <li>What should be removed, kept and added next time?</li>
+              </ol>
+            </section>
+
+            <div class="manual-end">
+              <a class="btn btn--ghost" href="index.html"
+                >Back to the library <span class="arr" aria-hidden="true">→</span></a
+              >
+              <a class="btn btn--ghost" href="../join.html"
+                >Design a workshop with us <span class="arr" aria-hidden="true">↗</span></a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <div class="footer-bottom">
+          <span>© <span data-year>2026</span> DIHUOLAB</span>
+          <span>BUILT BY MAKERS · THE FIRE BELOW IS STILL BURNING</span>
+        </div>
+      </div>
+    </footer>
+
+    <script src="../../assets/js/site.js" defer></script>
+    <script src="../../assets/js/workshops.js" defer></script>
+  </body>
+</html>

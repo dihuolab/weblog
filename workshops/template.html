@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>工作坊手册模板 · 地火创客</title>
+    <meta
+      name="description"
+      content="地火创客工作坊手册模板：开始前准备、现场流程、学员任务、常见问题与复盘。"
+    />
+    <meta name="theme-color" content="#08080a" />
+    <meta name="robots" content="noindex" />
+    <link rel="icon" href="../assets/img/favicon.png" type="image/png" />
+    <link rel="stylesheet" href="../assets/css/style.css" />
+    <link rel="stylesheet" href="../assets/css/workshops.css" />
+    <script>
+      document.documentElement.classList.add("js");
+    </script>
+  </head>
+
+  <body data-page="workshops" class="manual-page">
+    <a class="skip-link" href="#main">跳到主要内容</a>
+
+    <header class="site-header" data-header>
+      <div class="container header-inner">
+        <a class="brand" href="../index.html" aria-label="地火创客 · 首页">
+          <img
+            class="brand-mark"
+            src="../assets/img/logo-mark.png"
+            alt=""
+            width="30"
+            height="23"
+          />
+          <span class="brand-text">
+            <strong>地火创客</strong>
+            <span>DIHUOLAB</span>
+          </span>
+        </a>
+
+        <div class="header-actions">
+          <a class="lang-toggle" href="../en/workshops/template.html" hreflang="en" lang="en" aria-label="Switch to English">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <circle cx="12" cy="12" r="9"></circle>
+              <path d="M3 12h18M12 3c2.5 2.4 3.8 5.6 3.8 9s-1.3 6.6-3.8 9c-2.5-2.4-3.8-5.6-3.8-9S9.5 5.4 12 3Z"></path>
+            </svg>
+            <span>EN</span>
+          </a>
+          <button
+            class="menu-toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="site-nav"
+            aria-label="打开菜单"
+          >
+            <span></span>
+            <span></span>
+          </button>
+
+          <nav class="site-nav" id="site-nav" aria-label="主导航">
+            <a href="../index.html">首页</a>
+            <a href="../about.html">关于</a>
+            <a href="../projects.html">项目</a>
+            <a href="index.html" aria-current="page">工作坊</a>
+            <a href="../news.html">动态</a>
+            <a class="nav-cta" href="../join.html">加入我们 <span aria-hidden="true">↗</span></a>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <main id="main" class="manual-main">
+      <div class="container">
+        <div class="manual-shell">
+          <aside class="manual-toc" data-manual-toc>
+            <span class="mono">本页目录</span>
+            <nav data-toc-list aria-label="本页目录"></nav>
+          </aside>
+
+          <div class="manual-content">
+            <a class="crumb" href="index.html">工作坊 <span>/</span> 手册模板</a>
+
+            <span class="manual-kicker">MANUAL TEMPLATE / 00</span>
+            <h1>工作坊手册模板</h1>
+            <p class="manual-lead">
+              这是一份可以直接照着填的结构。把工作坊的目标、物料、流程、任务和
+              现场问题写进来，它就变成下一次可以打开执行的手册。
+            </p>
+
+            <div class="manual-callout manual-callout--warm">
+              <strong>这是模板页</strong>
+              <p>
+                复制此页到 <code>workshops/&lt;slug&gt;.html</code>，替换标题和正文，
+                再在 <code>assets/js/data-workshops.js</code> 里登记。完成后删除本段说明。
+              </p>
+            </div>
+
+            <div class="manual-meta">
+              <div>
+                <span>时长</span>
+                <strong>待填写</strong>
+              </div>
+              <div>
+                <span>人数</span>
+                <strong>待填写</strong>
+              </div>
+              <div>
+                <span>难度</span>
+                <strong>待填写</strong>
+              </div>
+              <div>
+                <span>更新</span>
+                <strong>2026-11-17</strong>
+              </div>
+            </div>
+
+            <div class="manual-actions">
+              <button class="manual-action" type="button" data-print>
+                打印 / 存为 PDF
+              </button>
+              <button
+                class="manual-action"
+                type="button"
+                data-focus-toggle
+                aria-pressed="false"
+              >
+                现场模式
+              </button>
+              <button class="manual-action" type="button" data-reset-checks>
+                清空勾选
+              </button>
+            </div>
+
+            <div class="manual-progress">
+              <span>准备清单进度</span>
+              <strong data-check-progress>0 / 0</strong>
+            </div>
+
+            <section id="overview">
+              <h2><span class="manual-num">01</span>概览</h2>
+              <div class="manual-body-copy">
+                <p>
+                  用两三句话说明这场工作坊解决什么问题、参与者最后会带走什么。
+                  如果一句话说不清，通常说明目标还需要再收窄。
+                </p>
+
+                <h3>这场工作坊结束时，参与者应该能够</h3>
+                <ul>
+                  <li>完成一件可以演示或带走的具体作品。</li>
+                  <li>说清楚自己用了什么方法，以及为什么这样做。</li>
+                  <li>知道下一步可以自己尝试什么。</li>
+                </ul>
+
+                <h3>适合谁</h3>
+                <p>
+                  写明前置经验、年龄或设备要求。没有门槛就写“零基础”，有门槛就写清楚
+                  需要先会什么，避免现场才发现有人跟不上。
+                </p>
+
+                <h3>最终产出</h3>
+                <p>
+                  描述作品的完成标准：能运行、能承重、能连续工作多久，或者只需要一个
+                  可展示的原型。标准越具体，现场判断越容易。
+                </p>
+              </div>
+            </section>
+
+            <section id="prepare">
+              <h2><span class="manual-num">02</span>开始前</h2>
+
+              <h3>物料与设备</h3>
+              <ul class="manual-checklist">
+                <li>
+                  <label class="manual-check">
+                    <input type="checkbox" id="tpl-material-1" data-check />
+                    <span>列出每位参与者需要的材料，并多准备 10% 余量。</span>
+                  </label>
+                </li>
+                <li>
+                  <label class="manual-check">
+                    <input type="checkbox" id="tpl-material-2" data-check />
+                    <span>检查工具状态：电池、刀头、线材、耗材、备用件。</span>
+                  </label>
+                </li>
+                <li>
+                  <label class="manual-check">
+                    <input type="checkbox" id="tpl-material-3" data-check />
+                    <span>把要现场演示的步骤，自己完整走过一遍。</span>
+                  </label>
+                </li>
+                <li>
+                  <label class="manual-check">
+                    <input type="checkbox" id="tpl-material-4" data-check />
+                    <span>准备好安全说明和必要的防护用品。</span>
+                  </label>
+                </li>
+              </ul>
+
+              <h3>场地与人员</h3>
+              <table class="manual-table">
+                <thead>
+                  <tr>
+                    <th>项目</th>
+                    <th>要求</th>
+                    <th>负责人</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>工位</td>
+                    <td>每人至少 60 cm 宽，电源可达。</td>
+                    <td>待填写</td>
+                  </tr>
+                  <tr>
+                    <td>协助者</td>
+                    <td>每 6–8 位参与者至少 1 位熟悉流程的人。</td>
+                    <td>待填写</td>
+                  </tr>
+                  <tr>
+                    <td>签到与拍摄</td>
+                    <td>提前确认肖像授权与记录方式。</td>
+                    <td>待填写</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div class="manual-callout">
+                <strong>安全边界</strong>
+                <p>
+                  写清楚哪些操作必须由主持人完成，哪些必须佩戴防护，哪些情况立即停止。
+                  不要依赖口头提醒。
+                </p>
+              </div>
+            </section>
+
+            <section id="run">
+              <h2><span class="manual-num">03</span>现场流程</h2>
+              <p>
+                时间线按分钟写，不按感觉写。每个环节都留出收尾和切换的时间。
+              </p>
+
+              <table class="manual-table">
+                <thead>
+                  <tr>
+                    <th>时间</th>
+                    <th>环节</th>
+                    <th>主持人在做什么</th>
+                    <th>参与者在做什么</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>00:00</td>
+                    <td>开场</td>
+                    <td>说明目标、产出、边界和时间安排。</td>
+                    <td>听，提问，确认自己要做什么。</td>
+                  </tr>
+                  <tr>
+                    <td>00:15</td>
+                    <td>演示</td>
+                    <td>完整演示一遍关键步骤，不跳过失败情况。</td>
+                    <td>看，记录，先不动手。</td>
+                  </tr>
+                  <tr>
+                    <td>00:35</td>
+                    <td>动手</td>
+                    <td>巡场，只处理卡住超过五分钟的人。</td>
+                    <td>按步骤做，遇到问题先自查。</td>
+                  </tr>
+                  <tr>
+                    <td>01:45</td>
+                    <td>检查点</td>
+                    <td>统一停下来，确认所有人到达同一步。</td>
+                    <td>展示当前状态，互相检查。</td>
+                  </tr>
+                  <tr>
+                    <td>02:30</td>
+                    <td>收尾</td>
+                    <td>组织演示、拍照、回收工具。</td>
+                    <td>完成作品，说明自己做了什么。</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+
+            <section id="tasks">
+              <h2><span class="manual-num">04</span>学员任务</h2>
+              <p>
+                把步骤写成参与者可以自己读懂的指令。每一步只做一件事，并说明完成标准。
+              </p>
+
+              <div class="manual-step">
+                <span class="manual-step-num">01</span>
+                <div>
+                  <h3>领取材料，检查数量</h3>
+                  <p>对照清单确认零件齐全。缺件先举手，不要自行替换。</p>
+                </div>
+              </div>
+              <div class="manual-step">
+                <span class="manual-step-num">02</span>
+                <div>
+                  <h3>完成第一个可运行的最小版本</h3>
+                  <p>先让它动起来，再考虑外观。记录第一次成功时的状态。</p>
+                </div>
+              </div>
+              <div class="manual-step">
+                <span class="manual-step-num">03</span>
+                <div>
+                  <h3>做一次修改，并说明原因</h3>
+                  <p>改一个参数或结构，观察变化。把“为什么改”写下来。</p>
+                </div>
+              </div>
+              <div class="manual-step">
+                <span class="manual-step-num">04</span>
+                <div>
+                  <h3>演示并回答一个问题</h3>
+                  <p>用一分钟说明作品、方法和下一次会改哪里。</p>
+                </div>
+              </div>
+            </section>
+
+            <section id="troubleshooting">
+              <h2><span class="manual-num">05</span>常见问题与预案</h2>
+              <table class="manual-table">
+                <thead>
+                  <tr>
+                    <th>现象</th>
+                    <th>先检查</th>
+                    <th>仍然不行时</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>设备不工作</td>
+                    <td>电源、连接、耗材、开关状态。</td>
+                    <td>换备用设备，把故障件单独放好。</td>
+                  </tr>
+                  <tr>
+                    <td>进度差距过大</td>
+                    <td>是否有人跳过了前置步骤。</td>
+                    <td>设一个统一检查点，让快的人去帮慢的人。</td>
+                  </tr>
+                  <tr>
+                    <td>材料不够</td>
+                    <td>是否有浪费或重复领取。</td>
+                    <td>改为两人共用，或调整最终产出的范围。</td>
+                  </tr>
+                  <tr>
+                    <td>有人一直不动手</td>
+                    <td>是没听懂、不敢做，还是不感兴趣。</td>
+                    <td>给一个更小的第一步，或换一个角色。</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div class="manual-callout manual-callout--warm">
+                <strong>提前决定“砍掉什么”</strong>
+                <p>
+                  时间不够时，先砍展示效果，不砍核心步骤。把优先级写在手册里，
+                  现场就不用临时争论。
+                </p>
+              </div>
+            </section>
+
+            <section id="review">
+              <h2><span class="manual-num">06</span>复盘与迭代</h2>
+              <p>结束后 24 小时内完成，趁记忆还清楚。</p>
+
+              <ul class="manual-checklist">
+                <li>
+                  <label class="manual-check">
+                    <input type="checkbox" id="tpl-review-1" data-check />
+                    <span>记录实际时间线与计划时间的差异。</span>
+                  </label>
+                </li>
+                <li>
+                  <label class="manual-check">
+                    <input type="checkbox" id="tpl-review-2" data-check />
+                    <span>记下至少三个现场问题，以及当时的处理方式。</span>
+                  </label>
+                </li>
+                <li>
+                  <label class="manual-check">
+                    <input type="checkbox" id="tpl-review-3" data-check />
+                    <span>保留一份参与者作品照片和一句反馈。</span>
+                  </label>
+                </li>
+                <li>
+                  <label class="manual-check">
+                    <input type="checkbox" id="tpl-review-4" data-check />
+                    <span>把下一版要改的地方写回本页，而不是只留在聊天记录里。</span>
+                  </label>
+                </li>
+              </ul>
+
+              <h3>这次工作坊留下的三个问题</h3>
+              <ol>
+                <li>哪个环节最容易被卡住？为什么？</li>
+                <li>哪些准备是多余的，哪些准备不够？</li>
+                <li>下一次要删掉、保留和新增什么？</li>
+              </ol>
+            </section>
+
+            <div class="manual-end">
+              <a class="btn btn--ghost" href="index.html"
+                >返回手册目录 <span class="arr" aria-hidden="true">→</span></a
+              >
+              <a class="btn btn--ghost" href="../join.html"
+                >一起设计工作坊 <span class="arr" aria-hidden="true">↗</span></a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <div class="footer-bottom">
+          <span>© <span data-year>2026</span> 地火创客 · DIHUOLAB</span>
+          <span>BUILT BY MAKERS · 地下之火，仍在燃烧</span>
+        </div>
+      </div>
+    </footer>
+
+    <script src="../assets/js/site.js" defer></script>
+    <script src="../assets/js/workshops.js" defer></script>
+  </body>
+</html>

@@ -42,19 +42,28 @@ npx serve .
 ├── news.html                  动态与记录 + 灵感源
 ├── join.html                  加入方式、联系方式
 ├── 404.html                   404 页
-├── en/                        英文版（index / about / projects / news / join）
+├── workshops/                 工作坊手册（中文）
+│   ├── index.html             手册目录
+│   ├── drv8825-stepmotor.html 让电机转起来：ESP32 + DRV8825
+│   ├── template.html          手册模板（noindex，不进入搜索）
+│   └── docs/                  工作坊原始文档
+├── en/                        英文版（index / about / projects / news / join / workshops）
 ├── assets/
 │   ├── css/style.css          全部样式与设计变量
+│   ├── css/workshops.css      工作坊目录、手册、打印与现场模式
 │   ├── js/data.js             ★ 中文动态 / 项目 / 站点链接
 │   ├── js/data-en.js          ★ 英文动态 / 项目 / 站点链接
+│   ├── js/data-workshops.js   ★ 工作坊目录数据
 │   ├── js/site.js             导航、动画、双语列表渲染、筛选、首屏火星
+│   ├── js/workshops.js        手册目录、TOC、勾选清单、打印、现场模式
 │   └── img/
 │       ├── dihuologo.png      官方 logo 原图（保留原始文件）
 │       ├── logo-mark.png      官方红色笔触图形（透明底，用于页头、首屏）
 │       ├── logo-wordmark-light.png  深色背景用横版组合（透明底）
 │       ├── favicon.png        站点图标
 │       ├── og.png             中文社交分享图（1200×630）
-│       └── og-en.png          英文社交分享图（1200×630）
+│       ├── og-en.png          英文社交分享图（1200×630）
+│       └── workshops/         工作坊手册照片（按手册分目录）
 ├── .github/ISSUE_TEMPLATE/
 │   ├── join.md                “报名加入” Issue 模板
 │   └── project-proposal.md    “发起项目” Issue 模板
@@ -105,6 +114,20 @@ npx serve .
 
 英文页面在 `en/`，内容数据在 `assets/js/data-en.js`，字段与中文版一致。项目 `status` 使用 `Recruiting` / `Preparing` / `In progress` / `Completed`，`site.js` 会自动映射成对应状态样式。英文动态的站内链接（如 `projects.html`）是相对于 `en/` 的路径。
 
+### 新增一份工作坊手册
+
+工作坊不是普通文章页，而是主持人、学员共用的现场手册，结构固定为：概览与流程、安全、材料、核心知识、动手步骤、检查点、排错、进阶、附录、讲师备忘。
+
+1. 把原始文档放进 `workshops/docs/`（支持 Markdown / PDF / Word / PPT / 图片）。
+2. 复制 `workshops/template.html` 为 `workshops/<slug>.html`，按模板填写中文内容；照片放进 `assets/img/workshops/<slug>/`。
+3. 复制 `en/workshops/template.html` 为 `en/workshops/<slug>.html`，完成英文版。
+4. 在 `assets/js/data-workshops.js` 的 `workshops` 数组里加一条，`status` 改为 `"published"`。
+5. 更新 `sitemap.xml` 里的两条手册 URL，并互相设置 `hreflang`。
+
+手册页会自动生成目录与滚动高亮。页面顶部的三个按钮分别用于打印 / 存 PDF、现场模式（隐藏页头页脚、放大正文）和清空勾选。勾选状态保存在浏览器 `localStorage`，按页面路径区分，不会串场。
+
+`template.html` 带有 `noindex`，只用于复制，不会出现在站点导航里。新增手册后，记得同步首页导航、各页页脚和 `sitemap.xml`（如果新增了栏目级页面）。
+
 ### 修改联系方式 / 社交链接
 
 - 页脚与各页的 GitHub 链接：搜索 `https://github.com/dihuolab/weblog` 批量替换即可。
@@ -114,7 +137,7 @@ npx serve .
 
 ### 调整导航 / 新增页面
 
-五个中文主页面、英文 `en/` 页面与 404 页共用同一套页头/页脚结构。新增页面时，需要同步复制页头与页脚，更新各页的 `aria-current="page"`、语言切换链接、`canonical`、`hreflang` 与 `sitemap.xml`。
+六个中文主页面、英文 `en/` 页面与 404 页共用同一套页头/页脚结构。新增普通页面时，需要同步复制页头与页脚，更新各页的 `aria-current="page"`、语言切换链接、`canonical`、`hreflang` 与 `sitemap.xml`。工作坊栏目已加入主导航与页脚，新增手册页不需要再改首页导航。
 
 ## 部署到 GitHub Pages
 

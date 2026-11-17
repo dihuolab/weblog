@@ -90,4 +90,40 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://dihuolab.github.io/weblog/en/join.html" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://dihuolab.github.io/weblog/join.html" />
   </url>
+  <url>
+    <loc>https://dihuolab.github.io/weblog/workshops/</loc>
+    <lastmod>2026-11-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://dihuolab.github.io/weblog/workshops/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://dihuolab.github.io/weblog/en/workshops/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dihuolab.github.io/weblog/workshops/" />
+  </url>
+  <url>
+    <loc>https://dihuolab.github.io/weblog/en/workshops/</loc>
+    <lastmod>2026-11-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://dihuolab.github.io/weblog/workshops/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://dihuolab.github.io/weblog/en/workshops/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dihuolab.github.io/weblog/workshops/" />
+  </url>
+  <url>
+    <loc>https://dihuolab.github.io/weblog/workshops/drv8825-stepmotor.html</loc>
+    <lastmod>2026-11-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://dihuolab.github.io/weblog/workshops/drv8825-stepmotor.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://dihuolab.github.io/weblog/en/workshops/drv8825-stepmotor.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dihuolab.github.io/weblog/workshops/drv8825-stepmotor.html" />
+  </url>
+  <url>
+    <loc>https://dihuolab.github.io/weblog/en/workshops/drv8825-stepmotor.html</loc>
+    <lastmod>2026-11-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://dihuolab.github.io/weblog/workshops/drv8825-stepmotor.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://dihuolab.github.io/weblog/en/workshops/drv8825-stepmotor.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dihuolab.github.io/weblog/workshops/drv8825-stepmotor.html" />
+  </url>
 </urlset>
